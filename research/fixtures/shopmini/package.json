@@ -1,0 +1,7 @@
+{
+  "name": "shopmini",
+  "version": "1.4.2",
+  "main": "src/server.js",
+  "scripts": { "start": "node src/server.js", "test": "node --test test/" },
+  "dependencies": { "express": "^4.19.2", "nodemailer": "^6.9.13", "better-sqlite3": "^11.0.0" }
+}

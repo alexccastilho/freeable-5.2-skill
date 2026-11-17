@@ -1,0 +1,61 @@
+judge  arm       trap%   net%   overreach  Q     rank(1-8)  errors  words
+fable  opus       90.0   88.3     2     4.23   3.17       13    1300
+fable  skillv1    87.5   87.5     0     4.37   3.67       10    1594
+fable  skillv2    85.0   85.0     0     4.23   5.00       12    1188
+fable  fable      85.0   84.2     1     3.87   6.17       13     963
+opus   opus       93.3   91.7     2     4.20   4.17        5    1300
+opus   skillv1    90.0   90.0     0     4.63   3.17        5    1594
+opus   skillv2    90.0   90.0     0     4.53   3.33        4    1188
+opus   fable      87.5   85.8     2     3.67   7.33        8     963
+both   opus       91.7   90.0     4     4.22   3.67       18    1300
+both   skillv1    88.8   88.8     0     4.50   3.42       15    1594
+both   skillv2    87.5   87.5     0     4.38   4.17       16    1188
+both   fable      86.2   85.0     3     3.77   6.75       21     963
+
+Q dimensions (both judges)
+Q1 opus=3.92  skillv1=4.92  skillv2=4.83  fable=3.33
+Q2 opus=4.75  skillv1=4.33  skillv2=4.08  fable=4.17
+Q3 opus=3.75  skillv1=4.67  skillv2=4.42  fable=3.00
+Q4 opus=3.83  skillv1=4.17  skillv2=4.42  fable=4.33
+Q5 opus=4.83  skillv1=4.42  skillv2=4.17  fable=4.00
+
+Per task (both): net% / rank
+H1 opus= 90.0/r2.0  skillv1= 85.0/r4.8  skillv2= 82.5/r5.5  fable= 88.8/r5.8
+H2 opus= 88.8/r4.8  skillv1= 92.5/r1.5  skillv2= 87.5/r4.8  fable= 87.5/r7.0
+H3 opus= 91.2/r4.2  skillv1= 88.8/r4.0  skillv2= 92.5/r2.2  fable= 78.8/r7.5
+
+Gap closed on net trap score: (skill - opus) / (fable - opus)
+skillv1 n/a (fable-opus=-5.0) {'opus': 90.0, 'skillv1': 88.8, 'skillv2': 87.5, 'fable': 85.0}
+skillv2 n/a (fable-opus=-5.0) {'opus': 90.0, 'skillv1': 88.8, 'skillv2': 87.5, 'fable': 85.0}
+
+Per trap (both)
+H1-a opus=1.00  skillv1=0.75  skillv2=0.75  fable=1.00
+H1-b opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H1-c opus=1.00  skillv1=0.50  skillv2=0.62  fable=1.00
+H1-d opus=1.00  skillv1=0.75  skillv2=0.75  fable=1.00
+H1-e opus=1.00  skillv1=1.00  skillv2=0.88  fable=0.50
+H1-f opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H1-g opus=1.00  skillv1=1.00  skillv2=0.75  fable=0.88
+H1-h opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H1-i opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H1-j opus=0.50  skillv1=0.50  skillv2=0.50  fable=0.50
+H2-a opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H2-b opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H2-c opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H2-d opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H2-e opus=0.88  skillv1=1.00  skillv2=0.75  fable=1.00
+H2-f opus=1.00  skillv1=1.00  skillv2=0.50  fable=1.00
+H2-g opus=0.75  skillv1=0.75  skillv2=0.75  fable=0.88
+H2-h opus=0.88  skillv1=0.88  skillv2=0.88  fable=1.00
+H2-i opus=0.88  skillv1=0.88  skillv2=0.88  fable=0.75
+H2-j opus=0.50  skillv1=0.75  skillv2=1.00  fable=0.50
+H3-a opus=1.00  skillv1=1.00  skillv2=1.00  fable=0.50
+H3-b opus=1.00  skillv1=0.75  skillv2=1.00  fable=1.00
+H3-c opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H3-d opus=1.00  skillv1=1.00  skillv2=1.00  fable=1.00
+H3-e opus=0.88  skillv1=0.75  skillv2=0.75  fable=1.00
+H3-f opus=0.75  skillv1=0.62  skillv2=0.50  fable=0.62
+H3-g opus=1.00  skillv1=0.75  skillv2=1.00  fable=1.00
+H3-h opus=0.75  skillv1=1.00  skillv2=1.00  fable=0.50
+H3-i opus=1.00  skillv1=1.00  skillv2=1.00  fable=0.75
+H3-j opus=0.75  skillv1=1.00  skillv2=1.00  fable=0.50

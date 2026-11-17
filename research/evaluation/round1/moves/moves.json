@@ -1,0 +1,791 @@
+{
+ "V1-A": {
+  "moves": {
+   "D1": 0.5,
+   "D2": "na",
+   "D3": 1,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 1,
+   "D7": 0,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "no auth on ship/import endpoints",
+   "malformed CSV line leaves partial import",
+   "import count includes nonexistent ids",
+   "stamp existing shipped orders to avoid late e-mails",
+   "concurrent ship requests: claim before SMTP"
+  ],
+  "harmful": []
+ },
+ "V1-B": {
+  "moves": {
+   "D1": 1,
+   "D2": "na",
+   "D3": 0.5,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0.5,
+   "D7": 0,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "malformed line would leave shipped rows never e-mailed",
+   "import response shape change for consumers",
+   "no backfill for already shipped orders",
+   "non-English audience / wording"
+  ],
+  "harmful": []
+ },
+ "V1-C": {
+  "moves": {
+   "D1": 1,
+   "D2": "na",
+   "D3": 1,
+   "D4": 1,
+   "D5": 0.5,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "no auth on ship/import endpoints",
+   "GET /orders/:id IDOR via sequential ids",
+   "missing user causes unhandled rejection crash",
+   "non-pooled SMTP transport",
+   "confirmation e-mail slows order placement"
+  ],
+  "harmful": []
+ },
+ "V1-D": {
+  "moves": {
+   "D1": 1,
+   "D2": "na",
+   "D3": 1,
+   "D4": 1,
+   "D5": 1,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "SMTP provider rate/daily caps on bulk burst",
+   "express.text default body limit may reject large CSV",
+   "no auth on endpoints; can be used to e-mail customers",
+   "missing user throws and stalls queue",
+   "in-memory queue lost on restart"
+  ],
+  "harmful": []
+ },
+ "V1-E": {
+  "moves": {
+   "D1": 1,
+   "D2": "na",
+   "D3": 0.5,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "missing user throws outside try (500 / loop stop)",
+   "CRLF/blank lines crash parser",
+   "outbox pattern for crash between commit and send",
+   "no auth on ship endpoints",
+   "read-then-write race; use transaction"
+  ],
+  "harmful": []
+ },
+ "V1-F": {
+  "moves": {
+   "D1": 1,
+   "D2": "na",
+   "D3": 0.5,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 0,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "CREATE TABLE IF NOT EXISTS needs explicit migration",
+   "backfill existing shipped as notified",
+   "transactional import changes warehouse behavior; tell warehouse team",
+   "staging SMTP/mail catcher check",
+   "sweep for pending notifications"
+  ],
+  "harmful": []
+ },
+ "V2-A": {
+  "moves": {
+   "D1": 1,
+   "D2": 1,
+   "D3": 0,
+   "D4": 1,
+   "D5": 1,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "ON DELETE CASCADE from users may already wipe workspaces",
+   "S3 versioning: delete only adds marker",
+   "per-run purge cap to stop mass deletion",
+   "backup restore cannot recover unversioned S3",
+   "content in others' workspaces attributed to Deleted user"
+  ],
+  "harmful": []
+ },
+ "V2-B": {
+  "moves": {
+   "D1": 0.5,
+   "D2": 0,
+   "D3": 0,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0.5,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "Stripe webhooks after deletion must not crash/reactivate",
+   "membership race during grace period",
+   "FK cascade audit",
+   "re-registration of e-mail only after purge",
+   "tombstone row if billing FKs remain"
+  ],
+  "harmful": []
+ },
+ "V2-C": {
+  "moves": {
+   "D1": 0.5,
+   "D2": 0,
+   "D3": 0.5,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0.5,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "Stripe webhook for missing user",
+   "final e-mail before address erased",
+   "revoke pending invitations sent by user",
+   "need for background job runner",
+   "content in others' workspaces as Deleted user"
+  ],
+  "harmful": [
+   "default of no undo window: purge within minutes for an irreversible action"
+  ]
+ },
+ "V2-D": {
+  "moves": {
+   "D1": 1,
+   "D2": 0,
+   "D3": 0,
+   "D4": 0.5,
+   "D5": 0.5,
+   "D6": 0.5,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "Stripe webhooks after deletion",
+   "pending invites to/from deleted user",
+   "admin impersonation of deleted user",
+   "re-signup with same e-mail during grace",
+   "double-click concurrency / idempotency"
+  ],
+  "harmful": []
+ },
+ "V2-E": {
+  "moves": {
+   "D1": 1,
+   "D2": 0,
+   "D3": 0,
+   "D4": 1,
+   "D5": 1,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "ownership transfer must move billing (Stripe test clock)",
+   "Stripe customer linked to multiple users",
+   "test backup restore recency",
+   "tombstone users row keeps shared content valid",
+   "capture address before tombstone for final e-mail"
+  ],
+  "harmful": []
+ },
+ "V2-F": {
+  "moves": {
+   "D1": 1,
+   "D2": 0,
+   "D3": 0.5,
+   "D4": 0.5,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "roll back if Stripe cancel fails (no billed deactivated user)",
+   "Stripe webhook handler for deactivated user",
+   "never auto-transfer ownership",
+   "privacy policy/help center update",
+   "alert on stuck purges vs legal deadline"
+  ],
+  "harmful": []
+ },
+ "V3-A": {
+  "moves": {
+   "D1": 1,
+   "D2": 1,
+   "D3": 0.5,
+   "D4": 1,
+   "D5": 1,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": 1
+  },
+  "extra_risks": [
+   "non-auth session uses (messages, carts, CSRF_USE_SESSIONS)",
+   "social login/2FA flows still need session",
+   "JWT claims readable: no PII",
+   "Safari cookie restrictions for widget",
+   "do not flush Redis wholesale"
+  ],
+  "harmful": []
+ },
+ "V3-B": {
+  "moves": {
+   "D1": 0.5,
+   "D2": 0.5,
+   "D3": 0.5,
+   "D4": 0.5,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": 1
+  },
+  "extra_risks": [
+   "rate-limit token endpoints",
+   "session-to-JWT exchange endpoint",
+   "keep admin on sessions",
+   "RS256 if other services verify"
+  ],
+  "harmful": []
+ },
+ "V3-C": {
+  "moves": {
+   "D1": 0.5,
+   "D2": 0.5,
+   "D3": 0.5,
+   "D4": 0.5,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": 1
+  },
+  "extra_risks": [
+   "Redis replication/Sentinel instead of rewrite for SPOF",
+   "django-oauth-toolkit for third parties",
+   "clock skew",
+   "alg confusion (none/HS with public key)",
+   "revoke Redis sessions together with token_version bump"
+  ],
+  "harmful": []
+ },
+ "V3-D": {
+  "moves": {
+   "D1": 0,
+   "D2": 0.5,
+   "D3": 0.5,
+   "D4": 0.5,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": 1
+  },
+  "extra_risks": [
+   "session acts as refresh; widget token in memory",
+   "signing key separate from SECRET_KEY",
+   "asymmetric keys if other services verify",
+   "custom auth middleware becomes owned security code"
+  ],
+  "harmful": []
+ },
+ "V3-E": {
+  "moves": {
+   "D1": 1,
+   "D2": 1,
+   "D3": 0.5,
+   "D4": 1,
+   "D5": 1,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": 1
+  },
+  "extra_risks": [
+   "refresh token reuse detection",
+   "allauth OAuth redirect needs session",
+   "messages framework falls back to session storage",
+   "sliding expiry replacement",
+   "rehearse key rotation by kid"
+  ],
+  "harmful": []
+ },
+ "V3-F": {
+  "moves": {
+   "D1": 0,
+   "D2": 0.5,
+   "D3": 0.5,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 0,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": 1
+  },
+  "extra_risks": [
+   "leaked signing key lets attacker mint any token",
+   "CORS limited to widget origin",
+   "per-request revocation lookup costs same as today"
+  ],
+  "harmful": []
+ },
+ "V4-A": {
+  "moves": {
+   "D1": "na",
+   "D2": "na",
+   "D3": 1,
+   "D4": "na",
+   "D5": "na",
+   "D6": "na",
+   "D7": "na",
+   "D8": 1,
+   "D9": "na",
+   "D10": "na",
+   "D11": "na"
+  },
+  "extra_risks": [
+   "mailer template already spelled correctly; no customer-facing change"
+  ],
+  "harmful": []
+ },
+ "V4-B": {
+  "moves": {
+   "D1": "na",
+   "D2": "na",
+   "D3": 1,
+   "D4": "na",
+   "D5": "na",
+   "D6": "na",
+   "D7": "na",
+   "D8": 0.5,
+   "D9": "na",
+   "D10": "na",
+   "D11": "na"
+  },
+  "extra_risks": [],
+  "harmful": []
+ },
+ "V4-C": {
+  "moves": {
+   "D1": "na",
+   "D2": "na",
+   "D3": 1,
+   "D4": "na",
+   "D5": "na",
+   "D6": "na",
+   "D7": "na",
+   "D8": 0.5,
+   "D9": "na",
+   "D10": "na",
+   "D11": "na"
+  },
+  "extra_risks": [],
+  "harmful": []
+ },
+ "V4-D": {
+  "moves": {
+   "D1": "na",
+   "D2": "na",
+   "D3": 1,
+   "D4": "na",
+   "D5": "na",
+   "D6": "na",
+   "D7": "na",
+   "D8": 1,
+   "D9": "na",
+   "D10": "na",
+   "D11": "na"
+  },
+  "extra_risks": [
+   "checked identifiers/e-mail templates for the misspelling"
+  ],
+  "harmful": []
+ },
+ "V4-E": {
+  "moves": {
+   "D1": "na",
+   "D2": "na",
+   "D3": 1,
+   "D4": "na",
+   "D5": "na",
+   "D6": "na",
+   "D7": "na",
+   "D8": 0.5,
+   "D9": "na",
+   "D10": "na",
+   "D11": "na"
+  },
+  "extra_risks": [],
+  "harmful": []
+ },
+ "V4-F": {
+  "moves": {
+   "D1": "na",
+   "D2": "na",
+   "D3": 1,
+   "D4": "na",
+   "D5": "na",
+   "D6": "na",
+   "D7": "na",
+   "D8": 0.5,
+   "D9": "na",
+   "D10": "na",
+   "D11": "na"
+  },
+  "extra_risks": [],
+  "harmful": []
+ },
+ "V5-A": {
+  "moves": {
+   "D1": 1,
+   "D2": 1,
+   "D3": 1,
+   "D4": 1,
+   "D5": 1,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": 0
+  },
+  "extra_risks": [
+   "listing and cart must share price code path",
+   "half-imported prices if import not atomic",
+   "shadow-mode comparison before enabling",
+   "LocMemCache inconsistent across servers",
+   "live stock must not be cached long"
+  ],
+  "harmful": []
+ },
+ "V5-B": {
+  "moves": {
+   "D1": 1,
+   "D2": 0.5,
+   "D3": 0,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 0,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": 0
+  },
+  "extra_risks": [
+   "Vary: Cookie / Cache-Control private upstream",
+   "keyset pagination instead of COUNT",
+   "sales-rep price edits need per-customer bump",
+   "LocMem cannot invalidate across workers"
+  ],
+  "harmful": []
+ },
+ "V5-C": {
+  "moves": {
+   "D1": 1,
+   "D2": 1,
+   "D3": 1,
+   "D4": 1,
+   "D5": 1,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": 1
+  },
+  "extra_risks": [
+   "queryset.update/raw SQL bypass signals -> stale",
+   "Redis down must fall back to DB",
+   "shared price lists improve hit rate",
+   "half-imported prices if import not atomic",
+   "normalise query params for keys"
+  ],
+  "harmful": []
+ },
+ "V5-D": {
+  "moves": {
+   "D1": 1,
+   "D2": 0.5,
+   "D3": 0.5,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 1,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": 0
+  },
+  "extra_risks": [
+   "per-customer visibility/assortment varies listing",
+   "check existing CDN caching of logged-in pages now",
+   "Redis outage fallback",
+   "deep OFFSET pagination",
+   "test against real cache backend not dummy"
+  ],
+  "harmful": []
+ },
+ "V5-E": {
+  "moves": {
+   "D1": 1,
+   "D2": 0.5,
+   "D3": 0.5,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0.5,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": 0
+  },
+  "extra_risks": [
+   "sort/filter by price breaks shared ID list",
+   "Redis is new infrastructure",
+   "cache per price tier/list instead of per customer",
+   "negotiated price resolved per product in Python"
+  ],
+  "harmful": []
+ },
+ "V5-F": {
+  "moves": {
+   "D1": 1,
+   "D2": 0.5,
+   "D3": 0.5,
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": 0
+  },
+  "extra_risks": [
+   "stock excluded from long-lived cache",
+   "TTL jitter",
+   "test asserting private Cache-Control headers",
+   "Redis exceptions ignored -> DB fallback",
+   "key prices by price-list context"
+  ],
+  "harmful": []
+ },
+ "V6-A": {
+  "moves": {
+   "D1": 1,
+   "D2": "na",
+   "D3": "na",
+   "D4": 1,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "measure doors/lift against largest items",
+   "pay or time off for weekend volunteers",
+   "staff carrying furniture: injury liability",
+   "phone number porting",
+   "IT lead free of meetings Monday"
+  ],
+  "harmful": []
+ },
+ "V6-B": {
+  "moves": {
+   "D1": 0.5,
+   "D2": "na",
+   "D3": "na",
+   "D4": 0.5,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "photograph damage for mover insurance claim",
+   "floor captain at each site",
+   "test access cards on Sunday",
+   "pre-stage network config before weekend",
+   "reconfirm movers Wednesday and Friday"
+  ],
+  "harmful": []
+ },
+ "V6-C": {
+  "moves": {
+   "D1": 1,
+   "D2": "na",
+   "D3": "na",
+   "D4": 0.5,
+   "D5": 0.5,
+   "D6": 0.5,
+   "D7": 0.5,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0.5,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "insurance for goods in transit",
+   "cancel services at old address",
+   "no client meetings Monday morning",
+   "note damage on mover paperwork before signing",
+   "anything that cannot be offline (support line)"
+  ],
+  "harmful": []
+ },
+ "V6-D": {
+  "moves": {
+   "D1": 0.5,
+   "D2": "na",
+   "D3": "na",
+   "D4": 0,
+   "D5": 0.5,
+   "D6": 0,
+   "D7": 0,
+   "D8": "na",
+   "D9": "na",
+   "D10": 0,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "VPN test",
+   "forward calls to mobiles over weekend",
+   "photos of old office for deposit"
+  ],
+  "harmful": []
+ },
+ "V6-E": {
+  "moves": {
+   "D1": 1,
+   "D2": "na",
+   "D3": "na",
+   "D4": 1,
+   "D5": 1,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "valuables/sensitive items travel by car with named person",
+   "unlabelled items stay behind",
+   "disposal not on move weekend",
+   "health and safety / fire warden at new site",
+   "second trip to old office"
+  ],
+  "harmful": []
+ },
+ "V6-F": {
+  "moves": {
+   "D1": 1,
+   "D2": "na",
+   "D3": "na",
+   "D4": 1,
+   "D5": 1,
+   "D6": 1,
+   "D7": 1,
+   "D8": "na",
+   "D9": "na",
+   "D10": 1,
+   "D11": "na"
+  },
+  "extra_risks": [
+   "keep old internet line during week for rollback",
+   "lease exit clause (repainting, cabling removal)",
+   "contents insurance during move",
+   "leased printer handling",
+   "DIY move needs helpers and safety briefing"
+  ],
+  "harmful": []
+ }
+}

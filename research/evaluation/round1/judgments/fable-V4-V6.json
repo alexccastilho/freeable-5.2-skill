@@ -1,0 +1,386 @@
+{
+ "responses": {
+  "V4-A": {
+   "traps": {
+    "V4-a": 1,
+    "V4-b": 1,
+    "V4-c": 1
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 5,
+    "Q3": 5,
+    "Q4": 4,
+    "Q5": 5
+   },
+   "errors": [
+    "Diff hunk header says 7 lines but shows 6 (cosmetic)."
+   ],
+   "note": "Correct one-line fix with sweep and grep verification; the mailer remark is accurate but slightly more than needed."
+  },
+  "V4-B": {
+   "traps": {
+    "V4-a": 1,
+    "V4-b": 1,
+    "V4-c": 0.5
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 5,
+    "Q3": 4,
+    "Q4": 5,
+    "Q5": 5
+   },
+   "errors": [],
+   "note": "Minimal correct fix with repo sweep; no explicit post-fix check stated."
+  },
+  "V4-C": {
+   "traps": {
+    "V4-a": 1,
+    "V4-b": 1,
+    "V4-c": 0.5
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 5,
+    "Q3": 4,
+    "Q4": 5,
+    "Q5": 5
+   },
+   "errors": [],
+   "note": "Minimal fix, sweep of source and tests, and states it is uncommitted; verification only implied."
+  },
+  "V4-D": {
+   "traps": {
+    "V4-a": 1,
+    "V4-b": 1,
+    "V4-c": 1
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 5,
+    "Q3": 5,
+    "Q4": 4,
+    "Q5": 5
+   },
+   "errors": [],
+   "note": "Correct fix, sweep including the reciev* stem, and a proportional re-search as verification; a little wordier than needed."
+  },
+  "V4-E": {
+   "traps": {
+    "V4-a": 1,
+    "V4-b": 1,
+    "V4-c": 0.5
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 5,
+    "Q3": 4,
+    "Q4": 5,
+    "Q5": 5
+   },
+   "errors": [],
+   "note": "Minimal correct fix with sweep; no explicit verification."
+  },
+  "V4-F": {
+   "traps": {
+    "V4-a": 1,
+    "V4-b": 1,
+    "V4-c": 0.5
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 5,
+    "Q3": 4,
+    "Q4": 5,
+    "Q5": 5
+   },
+   "errors": [],
+   "note": "Minimal fix, names what was searched, says nothing else changed and that it is uncommitted; verification only implied."
+  },
+  "V5-A": {
+   "traps": {
+    "V5-a": 1,
+    "V5-b": 1,
+    "V5-c": 1,
+    "V5-d": 0.5,
+    "V5-e": 0,
+    "V5-f": 1,
+    "V5-g": 1
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 4,
+    "Q3": 5,
+    "Q4": 4,
+    "Q5": 4
+   },
+   "errors": [],
+   "note": "Safest design (customer prices never cached), with shadow-mode rollout and stop rules, but no stampede handling and no direct staleness question."
+  },
+  "V5-B": {
+   "traps": {
+    "V5-a": 1,
+    "V5-b": 1,
+    "V5-c": 1,
+    "V5-d": 1,
+    "V5-e": 1,
+    "V5-f": 0.5,
+    "V5-g": 1
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 4,
+    "Q3": 4,
+    "Q4": 5,
+    "Q5": 4
+   },
+   "errors": [
+    "List prices are cached under catalog_version while the import bumps price_version and only bumps catalog_version 'if product data changed'; read literally, list prices could go stale after a price-only import."
+   ],
+   "note": "Compact and covers nearly every trap, including staleness and stampede; no target metric and one ambiguity in the two-version invalidation."
+  },
+  "V5-C": {
+   "traps": {
+    "V5-a": 1,
+    "V5-b": 1,
+    "V5-c": 1,
+    "V5-d": 0.5,
+    "V5-e": 0,
+    "V5-f": 0.5,
+    "V5-g": 1
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 4,
+    "Q3": 5,
+    "Q4": 4,
+    "Q5": 5
+   },
+   "errors": [],
+   "note": "Strong leak-proof design with good checks (queryset.update bypassing signals, Redis-down fallback, revert rule), but misses stampede and never asks about acceptable staleness."
+  },
+  "V5-D": {
+   "traps": {
+    "V5-a": 1,
+    "V5-b": 1,
+    "V5-c": 1,
+    "V5-d": 1,
+    "V5-e": 1,
+    "V5-f": 1,
+    "V5-g": 1
+   },
+   "Q": {
+    "Q1": 3,
+    "Q2": 4,
+    "Q3": 5,
+    "Q4": 4,
+    "Q5": 5
+   },
+   "errors": [],
+   "note": "Catches every trap, with a stated target, stampede lock plus warming, a real-backend leak test and failure fallback; nine questions is too many."
+  },
+  "V5-E": {
+   "traps": {
+    "V5-a": 1,
+    "V5-b": 1,
+    "V5-c": 1,
+    "V5-d": 1,
+    "V5-e": 0,
+    "V5-f": 0.5,
+    "V5-g": 1
+   },
+   "Q": {
+    "Q1": 4,
+    "Q2": 4,
+    "Q3": 3,
+    "Q4": 4,
+    "Q5": 4
+   },
+   "errors": [],
+   "note": "Sound two-layer design and a sharp question on price sorting breaking the shared ID list, but no stampede handling, no flag or rollback, and no verification of the improvement."
+  },
+  "V5-F": {
+   "traps": {
+    "V5-a": 1,
+    "V5-b": 1,
+    "V5-c": 1,
+    "V5-d": 1,
+    "V5-e": 1,
+    "V5-f": 0.5,
+    "V5-g": 1
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 4,
+    "Q3": 5,
+    "Q4": 4,
+    "Q5": 5
+   },
+   "errors": [],
+   "note": "Thorough layered design keyed by price context, with on-commit generation bump, stampede lock, header test and DB fallback; no target metric and caches prices by default, which is more moving parts than needed."
+  },
+  "V6-A": {
+   "traps": {
+    "V6-a": 1,
+    "V6-b": 1,
+    "V6-c": 1,
+    "V6-d": 1,
+    "V6-e": 1,
+    "V6-f": 1,
+    "V6-g": 1,
+    "V6-h": 1
+   },
+   "Q": {
+    "Q1": 3,
+    "Q2": 5,
+    "Q3": 5,
+    "Q4": 4,
+    "Q5": 5
+   },
+   "errors": [
+    "Schedules server shutdown at Friday 17:00 and desk packing by 16:00, ahead of the stated 18:00 start (minor)."
+   ],
+   "note": "Most complete plan, with go/no-go conditions, a risk table, budget lines and door/lift measuring; ten questions and the overall length are heavier than needed."
+  },
+  "V6-B": {
+   "traps": {
+    "V6-a": 1,
+    "V6-b": 1,
+    "V6-c": 1,
+    "V6-d": 1,
+    "V6-e": 1,
+    "V6-f": 1,
+    "V6-g": 1,
+    "V6-h": 1
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 5,
+    "Q3": 4,
+    "Q4": 5,
+    "Q5": 5
+   },
+   "errors": [],
+   "note": "Covers every trap in a tight timeline with six defaulted questions, internet lead time called out, and a Sunday 4pm go/no-go with an early staff message."
+  },
+  "V6-C": {
+   "traps": {
+    "V6-a": 1,
+    "V6-b": 1,
+    "V6-c": 1,
+    "V6-d": 1,
+    "V6-e": 1,
+    "V6-f": 1,
+    "V6-g": 1,
+    "V6-h": 1
+   },
+   "Q": {
+    "Q1": 3,
+    "Q2": 5,
+    "Q3": 4,
+    "Q4": 4,
+    "Q5": 5
+   },
+   "errors": [
+    "Has staff shutting down and unplugging from 15:00 Friday, before the 18:00 window (minor); does not name the building-required insurance certificate explicitly."
+   ],
+   "note": "Complete and clearly laid out, with a good week-after section and the fallback told to staff on Friday; eleven questions is excessive and IT setup is left to Sunday."
+  },
+  "V6-D": {
+   "traps": {
+    "V6-a": 1,
+    "V6-b": 1,
+    "V6-c": 1,
+    "V6-d": 0.5,
+    "V6-e": 1,
+    "V6-f": 1,
+    "V6-g": 1,
+    "V6-h": 1
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 4,
+    "Q3": 3,
+    "Q4": 5,
+    "Q5": 4
+   },
+   "errors": [
+    "Says movers load IT equipment first, which normally means it comes off the truck last; the default assumes the ISP circuit is already installed, underplaying the lead-time risk."
+   ],
+   "note": "Concise and mostly complete, but the remote-work fallback is only a one-line option, clients are not notified, and risk handling is thin."
+  },
+  "V6-E": {
+   "traps": {
+    "V6-a": 1,
+    "V6-b": 1,
+    "V6-c": 1,
+    "V6-d": 1,
+    "V6-e": 1,
+    "V6-f": 1,
+    "V6-g": 1,
+    "V6-h": 0.5
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 5,
+    "Q3": 5,
+    "Q4": 4,
+    "Q5": 5
+   },
+   "errors": [
+    "Assumes the landlord handles alarm codes and access lists, leaving that unowned."
+   ],
+   "note": "Best risk handling: a Thursday go/no-go with different actions per failure, a Saturday abort rule and a fallback rule sent a week ahead; does not ask about furniture."
+  },
+  "V6-F": {
+   "traps": {
+    "V6-a": 1,
+    "V6-b": 1,
+    "V6-c": 1,
+    "V6-d": 1,
+    "V6-e": 1,
+    "V6-f": 1,
+    "V6-g": 1,
+    "V6-h": 0.5
+   },
+   "Q": {
+    "Q1": 5,
+    "Q2": 5,
+    "Q3": 5,
+    "Q4": 4,
+    "Q5": 5
+   },
+   "errors": [
+    "Network setup is left to Sunday morning with the decision at 16:00, giving little buffer; clients are not explicitly notified."
+   ],
+   "note": "Well-checked plan with a per-step check, a budget split, keeping the old line as rollback and the lease exit clause flagged; furniture not asked about and Sunday is tight."
+  }
+ },
+ "rankings": {
+  "V4": [
+   "V4-F",
+   "V4-C",
+   "V4-D",
+   "V4-A",
+   "V4-B",
+   "V4-E"
+  ],
+  "V5": [
+   "V5-D",
+   "V5-F",
+   "V5-B",
+   "V5-A",
+   "V5-C",
+   "V5-E"
+  ],
+  "V6": [
+   "V6-B",
+   "V6-E",
+   "V6-A",
+   "V6-F",
+   "V6-C",
+   "V6-D"
+  ]
+ }
+}

@@ -1,0 +1,63 @@
+{
+  "responses": {
+    "H3-A": {
+      "traps": {"H3-a": 0.5, "H3-b": 1, "H3-c": 1, "H3-d": 1, "H3-e": 1, "H3-f": 0.5, "H3-g": 1, "H3-h": 0.5, "H3-i": 0.5, "H3-j": 0.5},
+      "overreach": [],
+      "Q": {"Q1": 3, "Q2": 4, "Q3": 3, "Q4": 4, "Q5": 4},
+      "errors": ["Seven questions, all placed at the end, and the answer to the 'what is driving this' question changes nothing in the plan", "Assumes by default that mobile or external API clients exist, which the context does not say"],
+      "note": "Compact and technically sound staged plan, but no stage exit criteria, no way to pause or step back, the baseline is not used as a stop criterion, and no deploy-hours or stakeholder mechanism."
+    },
+    "H3-B": {
+      "traps": {"H3-a": 1, "H3-b": 1, "H3-c": 1, "H3-d": 1, "H3-e": 0.5, "H3-f": 0.5, "H3-g": 0.5, "H3-h": 1, "H3-i": 1, "H3-j": 1},
+      "overreach": [],
+      "Q": {"Q1": 5, "Q2": 4, "Q3": 5, "Q4": 4, "Q5": 4},
+      "errors": ["Assumes 'a week of soak on staging' exists today, which the context does not state"],
+      "note": "Strong on premise, baseline-driven stop criteria and what the weekly rhythm gives for free, but no explicit branching change, no merger-watches or on-call ownership, and no inventory of today's manual release steps."
+    },
+    "H3-C": {
+      "traps": {"H3-a": 1, "H3-b": 1, "H3-c": 1, "H3-d": 1, "H3-e": 0.5, "H3-f": 0.5, "H3-g": 1, "H3-h": 1, "H3-i": 1, "H3-j": 1},
+      "overreach": [],
+      "Q": {"Q1": 5, "Q2": 4, "Q3": 5, "Q4": 5, "Q5": 4},
+      "errors": [],
+      "note": "Tight plan with concrete go/no-go, abort and step-back rules and Celery compatibility; misses a branching-practice change and an inventory of the current manual release or a zero-downtime check."
+    },
+    "H3-D": {
+      "traps": {"H3-a": 0.5, "H3-b": 1, "H3-c": 1, "H3-d": 1, "H3-e": 1, "H3-f": 1, "H3-g": 1, "H3-h": 0.5, "H3-i": 1, "H3-j": 0.5},
+      "overreach": [],
+      "Q": {"Q1": 3, "Q2": 4, "Q3": 4, "Q4": 4, "Q5": 4},
+      "errors": ["Fixed week ranges and a 'under 30 minutes' merge-to-production target are given before any baseline exists"],
+      "note": "Clear, proportionate four-stage plan that covers manual steps and downtime, but only one stage has an exit criterion, the motivation question does not change the target, and there is no deploy-hours or release-communication mechanism."
+    },
+    "H3-E": {
+      "traps": {"H3-a": 1, "H3-b": 1, "H3-c": 1, "H3-d": 1, "H3-e": 1, "H3-f": 0.5, "H3-g": 1, "H3-h": 0.5, "H3-i": 1, "H3-j": 1},
+      "overreach": [],
+      "Q": {"Q1": 4, "Q2": 5, "Q3": 4, "Q4": 4, "Q5": 5},
+      "errors": ["Names tools (Playwright, django-waffle, django-migration-linter, ECS) as defaults without checking the stack"],
+      "note": "Well-grounded and actionable with a good QA-role section and DORA baseline, but advancement criteria are only examples, there is no explicit step-back or pause rule, and the current release procedure is not inventoried."
+    },
+    "H3-F": {
+      "traps": {"H3-a": 1, "H3-b": 1, "H3-c": 1, "H3-d": 1, "H3-e": 1, "H3-f": 0.5, "H3-g": 1, "H3-h": 1, "H3-i": 1, "H3-j": 1},
+      "overreach": [],
+      "Q": {"Q1": 5, "Q2": 4, "Q3": 5, "Q4": 5, "Q5": 5},
+      "errors": ["The 'under 15%' change-failure threshold is arbitrary and set before the baseline", "Mixing 'Phase' and 'Stage' numbering is slightly confusing"],
+      "note": "Dense, measurable plan with checks per phase, a gated final step, a revert rule, on-call, deploy-hours and release-branch replacement; only the inventory of today's manual release steps and downtime is thin."
+    },
+    "H3-G": {
+      "traps": {"H3-a": 1, "H3-b": 0.5, "H3-c": 1, "H3-d": 1, "H3-e": 1, "H3-f": 1, "H3-g": 1, "H3-h": 1, "H3-i": 1, "H3-j": 1},
+      "overreach": [],
+      "Q": {"Q1": 5, "Q2": 4, "Q3": 5, "Q4": 4, "Q5": 5},
+      "errors": ["Opens by saying the 35-minute suite is not a blocker; with 14 engineers merging it causes queueing and batching, and flaky tests and merge queueing are never mentioned", "Starts on-demand production deploys in phase 2 before the migration safety rules of phase 4 are in place"],
+      "note": "Excellent go/no-go, abort and step-back rules and the best handling of QA replacement and zero-downtime, but it underrates the test suite and sequences migration safety after on-demand deploys begin."
+    },
+    "H3-H": {
+      "traps": {"H3-a": 1, "H3-b": 1, "H3-c": 1, "H3-d": 1, "H3-e": 1, "H3-f": 1, "H3-g": 1, "H3-h": 1, "H3-i": 1, "H3-j": 0.5},
+      "overreach": [],
+      "Q": {"Q1": 4, "Q2": 5, "Q3": 4, "Q4": 4, "Q5": 5},
+      "errors": ["Never asks what problem the team wants to solve, only what 'continuous deployment' means to them", "Exit criteria such as 'deploys are boring' are soft, and feature flags arrive in the same phase as daily production deploys"],
+      "note": "Most concrete on test speed-up, migrations, deploy mechanics, freeze switch and first steps this week; weaker on stakeholder communication, deploy-hours policy and measurable exit criteria."
+    }
+  },
+  "rankings": {
+    "H3": ["H3-F", "H3-H", "H3-G", "H3-C", "H3-E", "H3-B", "H3-D", "H3-A"]
+  }
+}

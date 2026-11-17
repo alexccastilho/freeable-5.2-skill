@@ -1,0 +1,90 @@
+{
+  "responses": {
+    "H1-A": {
+      "traps": {"H1-a": 1, "H1-b": 1, "H1-c": 1, "H1-d": 1, "H1-e": 1, "H1-f": 1, "H1-g": 1, "H1-h": 1, "H1-i": 1, "H1-j": 0.5},
+      "overreach": ["H1-x2"],
+      "Q": {"Q1": 3, "Q2": 4, "Q3": 4, "Q4": 3, "Q5": 4},
+      "errors": [
+        "Says a bookmarked link will work, but the chosen auth is an Authorization: Bearer header, which a browser link cannot send.",
+        "Defaults to since/until filters and sorting on updated_at while itself noting that bulkImport leaves updated_at stale.",
+        "Formula guard is applied to the numeric total too, so a negative total would be exported as text with a leading apostrophe.",
+        "Includes customer e-mail by default without treating it as data to minimise."
+      ],
+      "note": "Well grounded and covers nearly every trap with streaming, LEFT JOIN and a rollout note about breaking the import caller, but five questions, a README typo fix, no open-the-real-file check and no rollback statement."
+    },
+    "H1-B": {
+      "traps": {"H1-a": 1, "H1-b": 1, "H1-c": 0.5, "H1-d": 1, "H1-e": 1, "H1-f": 1, "H1-g": 1, "H1-h": 1, "H1-i": 1, "H1-j": 0.5},
+      "overreach": [],
+      "Q": {"Q1": 5, "Q2": 4, "Q3": 5, "Q4": 4, "Q5": 5},
+      "errors": [
+        "Accepts the token as a ?token= query parameter, which leaks into logs and browser history (acknowledged in the response).",
+        "SQL uses SELECT o.* although the output is allow-listed through COLUMNS."
+      ],
+      "note": "Three sharp questions with defaults, a fail-closed token that still works from a bookmark, a full HTTP-level test with awkward data and a real-file check; never says outright that no admin UI exists, omits that items and addresses are absent, and gives no rollback statement."
+    },
+    "H1-C": {
+      "traps": {"H1-a": 1, "H1-b": 1, "H1-c": 1, "H1-d": 1, "H1-e": 0.5, "H1-f": 1, "H1-g": 0.5, "H1-h": 1, "H1-i": 1, "H1-j": 0.5},
+      "overreach": [],
+      "Q": {"Q1": 4, "Q2": 5, "Q3": 3, "Q4": 5, "Q5": 4},
+      "errors": [
+        "Ships the endpoint unauthenticated by default (flagged, and customer data is deliberately excluded).",
+        "No UTF-8 BOM, and the whole list is built with .all() in memory (acknowledged)."
+      ],
+      "note": "Lean and accurate about the repo (no UI, no auth, no items or addresses, unreliable updated_at, no created_at) and keeps PII out, but leaves the route open, has only a service-level test, no real-file check and no rollback statement."
+    },
+    "H1-D": {
+      "traps": {"H1-a": 0.5, "H1-b": 1, "H1-c": 0.5, "H1-d": 0.5, "H1-e": 1, "H1-f": 1, "H1-g": 1, "H1-h": 1, "H1-i": 1, "H1-j": 0.5},
+      "overreach": [],
+      "Q": {"Q1": 4, "Q2": 3, "Q3": 3, "Q4": 4, "Q5": 3},
+      "errors": [
+        "The delivered default (Bearer header) cannot be used from a browser download; the response admits this and defers the fix to a follow-up.",
+        "The auth check is only verified manually, not in the test file."
+      ],
+      "note": "Sound CSV and token gating with no PII, but it never states that no admin UI exists, does not mention the missing items and addresses, lists the updated_at gap without its effect on the export, and leaves staff without a workable way to download."
+    },
+    "H1-E": {
+      "traps": {"H1-a": 1, "H1-b": 1, "H1-c": 1, "H1-d": 0.5, "H1-e": 0.5, "H1-f": 1, "H1-g": 0.5, "H1-h": 1, "H1-i": 1, "H1-j": 0.5},
+      "overreach": [],
+      "Q": {"Q1": 4, "Q2": 4, "Q3": 4, "Q4": 3, "Q5": 4},
+      "errors": [
+        "Exports raw total_cents with no decision on money format.",
+        "Non sequitur: e-mail is left out 'because the schema has no address to ship to'.",
+        "Suggests a date filter as the scaling fix although the only date column is unreliable and that is not discussed.",
+        "The 'Failure modes covered' checklist includes items that do not apply."
+      ],
+      "note": "Basic auth is the right fit for a browser download and the HTTP test is real, but there is no filter, the whole table is loaded with .all(), cents are exported raw and the updated_at problem is listed without its consequence."
+    },
+    "H1-F": {
+      "traps": {"H1-a": 0.5, "H1-b": 1, "H1-c": 0.5, "H1-d": 1, "H1-e": 1, "H1-f": 1, "H1-g": 1, "H1-h": 1, "H1-i": 1, "H1-j": 0.5},
+      "overreach": [],
+      "Q": {"Q1": 4, "Q2": 3, "Q3": 3, "Q4": 3, "Q5": 3},
+      "errors": [
+        "An X-Admin-Token header cannot be sent from a browser download; acknowledged but left unresolved ('the admin page (if one exists)').",
+        "The test inserts an order with user_id 99 and no such user; better-sqlite3 enables foreign keys by default as far as I recall, so this insert would likely fail (not run here).",
+        "Auth lives inside the route handler and has no automated test."
+      ],
+      "note": "Good CSV, streaming, LEFT JOIN and PII minimisation, but it never establishes that no admin UI exists, omits the missing items and addresses, pads with a failure checklist and leaves the download unusable from a browser."
+    },
+    "H1-G": {
+      "traps": {"H1-a": 1, "H1-b": 1, "H1-c": 1, "H1-d": 1, "H1-e": 1, "H1-f": 1, "H1-g": 1, "H1-h": 1, "H1-i": 1, "H1-j": 0.5},
+      "overreach": ["H1-x2"],
+      "Q": {"Q1": 4, "Q2": 5, "Q3": 4, "Q4": 4, "Q5": 4},
+      "errors": [
+        "The test file is described with one example rather than written out.",
+        "Five questions, two of which overlap (how staff log in, whether to protect the import route)."
+      ],
+      "note": "Best read of the repo (no UI, no auth, no created_at, no addresses, tracking codes as untrusted input) with browser-friendly fail-closed Basic auth, streaming and integer money maths; it fixes the README typo unasked and gives no rollback statement."
+    },
+    "H1-H": {
+      "traps": {"H1-a": 1, "H1-b": 1, "H1-c": 1, "H1-d": 1, "H1-e": 0.5, "H1-f": 1, "H1-g": 1, "H1-h": 1, "H1-i": 1, "H1-j": 0.5},
+      "overreach": [],
+      "Q": {"Q1": 4, "Q2": 5, "Q3": 3, "Q4": 4, "Q5": 4},
+      "errors": [
+        "Ships customer names on an unauthenticated endpoint by default, relying on an unverified assumption that the service is internal-only.",
+        "The whole export is built with .all() in memory (acknowledged)."
+      ],
+      "note": "Very well grounded, including the warning not to re-upload the file to the shipment import, with an HTTP-level test, but it follows the open-route pattern while exporting names, does not stream, and has no real-file check or rollback statement."
+    }
+  },
+  "rankings": {"H1": ["H1-G", "H1-B", "H1-A", "H1-H", "H1-C", "H1-E", "H1-F", "H1-D"]}
+}

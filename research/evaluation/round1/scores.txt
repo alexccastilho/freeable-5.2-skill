@@ -1,0 +1,67 @@
+## Overall by arm and judge (trap catch %, Q mean 1-5, mean rank 1-6 lower=better, errors, words)
+fable  opus       trap= 95.5  Q=4.33  rank=3.42  errors=11  words=926
+fable  opusskill  trap= 94.3  Q=4.57  rank=3.33  errors=12  words=1140
+fable  fable      trap= 93.1  Q=4.20  rank=3.75  errors=11  words=921
+opus   opus       trap= 95.0  Q=4.08  rank=3.75  errors=8  words=926
+opus   opusskill  trap= 93.3  Q=4.50  rank=2.67  errors=2  words=1140
+opus   fable      trap= 93.7  Q=4.07  rank=4.08  errors=4  words=921
+both   opus       trap= 95.3  Q=4.21  rank=3.58  errors=19  words=926
+both   opusskill  trap= 93.8  Q=4.53  rank=3.00  errors=14  words=1140
+both   fable      trap= 93.4  Q=4.13  rank=3.92  errors=15  words=921
+
+## Per task (both judges): trap % / mean rank
+V1 opus=100.0%/r5.0  opusskill=100.0%/r2.5  fable=100.0%/r3.0
+V2 opus= 98.6%/r2.8  opusskill= 95.8%/r2.2  fable= 86.1%/r5.5
+V3 opus=100.0%/r1.5  opusskill=100.0%/r3.8  fable=100.0%/r5.2
+V4 opus= 83.3%/r5.5  opusskill=100.0%/r2.5  fable= 83.3%/r2.5
+V5 opus= 92.9%/r2.5  opusskill= 73.2%/r4.5  fable= 91.1%/r3.5
+V6 opus= 96.9%/r4.2  opusskill= 93.8%/r2.5  fable=100.0%/r3.8
+
+## Gap closed (trap %): (opusskill - opus) / (fable - opus)
+fable: opus=95.5 skill=94.3 fable=93.1 gap_closed=n/a (fable not ahead)
+opus: opus=95.0 skill=93.3 fable=93.7 gap_closed=n/a (fable not ahead)
+both: opus=95.3 skill=93.8 fable=93.4 gap_closed=n/a (fable not ahead)
+
+## Per trap catch rate by arm (both judges)
+V1-a opus=1.00  opusskill=1.00  fable=1.00
+V1-b opus=1.00  opusskill=1.00  fable=1.00
+V1-c opus=1.00  opusskill=1.00  fable=1.00
+V1-d opus=1.00  opusskill=1.00  fable=1.00
+V1-e opus=1.00  opusskill=1.00  fable=1.00
+V1-f opus=1.00  opusskill=1.00  fable=1.00
+V1-g opus=1.00  opusskill=1.00  fable=1.00
+V1-h opus=1.00  opusskill=1.00  fable=1.00
+V2-a opus=1.00  opusskill=1.00  fable=1.00
+V2-b opus=1.00  opusskill=1.00  fable=1.00
+V2-c opus=1.00  opusskill=1.00  fable=1.00
+V2-d opus=1.00  opusskill=1.00  fable=1.00
+V2-e opus=1.00  opusskill=1.00  fable=1.00
+V2-f opus=1.00  opusskill=1.00  fable=0.75
+V2-g opus=1.00  opusskill=1.00  fable=1.00
+V2-h opus=1.00  opusskill=1.00  fable=1.00
+V2-i opus=0.88  opusskill=0.62  fable=0.00
+V3-a opus=1.00  opusskill=1.00  fable=1.00
+V3-b opus=1.00  opusskill=1.00  fable=1.00
+V3-c opus=1.00  opusskill=1.00  fable=1.00
+V3-d opus=1.00  opusskill=1.00  fable=1.00
+V3-e opus=1.00  opusskill=1.00  fable=1.00
+V3-f opus=1.00  opusskill=1.00  fable=1.00
+V3-g opus=1.00  opusskill=1.00  fable=1.00
+V4-a opus=1.00  opusskill=1.00  fable=1.00
+V4-b opus=1.00  opusskill=1.00  fable=1.00
+V4-c opus=0.50  opusskill=1.00  fable=0.50
+V5-a opus=1.00  opusskill=1.00  fable=1.00
+V5-b opus=1.00  opusskill=1.00  fable=1.00
+V5-c opus=1.00  opusskill=1.00  fable=1.00
+V5-d opus=1.00  opusskill=0.50  fable=1.00
+V5-e opus=1.00  opusskill=0.00  fable=0.50
+V5-f opus=0.50  opusskill=0.62  fable=0.88
+V5-g opus=1.00  opusskill=1.00  fable=1.00
+V6-a opus=1.00  opusskill=1.00  fable=1.00
+V6-b opus=1.00  opusskill=1.00  fable=1.00
+V6-c opus=1.00  opusskill=1.00  fable=1.00
+V6-d opus=0.75  opusskill=1.00  fable=1.00
+V6-e opus=1.00  opusskill=1.00  fable=1.00
+V6-f opus=1.00  opusskill=1.00  fable=1.00
+V6-g opus=1.00  opusskill=1.00  fable=1.00
+V6-h opus=1.00  opusskill=0.50  fable=1.00

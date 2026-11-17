@@ -1,0 +1,11 @@
+const express = require('express');
+const orders = require('./orders/orderService');
+const { importShipments } = require('./admin/bulkImport');
+const app = express();
+app.use(express.json()); app.use(express.text());
+app.post('/orders', async (req, res) => res.json(await orders.placeOrder(req.body.userId, req.body.totalCents)));
+app.get('/orders/:id', (req, res) => res.json(orders.getOrder(Number(req.params.id))));
+app.post('/orders/:id/ship', (req, res) => res.json(orders.markShipped(Number(req.params.id), req.body.trackingCode)));
+app.post('/admin/shipments/import', (req, res) => res.json({ updated: importShipments(req.body) }));
+if (require.main === module) app.listen(3000);
+module.exports = app;

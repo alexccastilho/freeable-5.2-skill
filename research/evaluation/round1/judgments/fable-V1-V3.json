@@ -1,0 +1,160 @@
+{
+ "responses": {
+  "V1-A": {
+   "traps": {"V1-a": 1, "V1-b": 1, "V1-c": 1, "V1-d": 1, "V1-e": 1, "V1-f": 1, "V1-g": 1, "V1-h": 1},
+   "Q": {"Q1": 4, "Q2": 5, "Q3": 4, "Q4": 4, "Q5": 5},
+   "errors": [
+    "Patch leaves the README typo 'recieve' in the sentence it rewrites (cosmetic).",
+    "Tests were run against a node:sqlite stand-in, not better-sqlite3 (disclosed)."
+   ],
+   "note": "Complete patch covering both ship paths with a durable sent-at column, claim/unclaim retry, backfill of old shipped orders and tests it actually ran; only gap is no rollout or kill-switch step."
+  },
+  "V1-B": {
+   "traps": {"V1-a": 1, "V1-b": 1, "V1-c": 1, "V1-d": 1, "V1-e": 1, "V1-f": 1, "V1-g": 1, "V1-h": 1},
+   "Q": {"Q1": 4, "Q2": 5, "Q3": 3, "Q4": 4, "Q5": 4},
+   "errors": [
+    "By its own design a failed or lost e-mail is never resent, even on CSV re-upload (disclosed as a known gap and deferred).",
+    "Changes import semantics (skips bad lines, new response shape) beyond the request, though flagged."
+   ],
+   "note": "Sound status-transition design with full code and tests routed through one service function, but unrun, with no verification or rollout steps and the failure path only deferred."
+  },
+  "V1-C": {
+   "traps": {"V1-a": 1, "V1-b": 1, "V1-c": 1, "V1-d": 1, "V1-e": 1, "V1-f": 1, "V1-g": 1, "V1-h": 1},
+   "Q": {"Q1": 4, "Q2": 5, "Q3": 5, "Q4": 4, "Q5": 5},
+   "errors": [
+    "Failed sends are not retried (raised as question 2 with a follow-up); the first question, about which path is used, is low value."
+   ],
+   "note": "Minimal three-file diff that keeps markShipped synchronous, sends serially in the background, tests the bulk path, and adds concrete verification, rollout checks and a revert trigger; honest about being unrun."
+  },
+  "V1-D": {
+   "traps": {"V1-a": 1, "V1-b": 1, "V1-c": 1, "V1-d": 1, "V1-e": 1, "V1-f": 1, "V1-g": 1, "V1-h": 1},
+   "Q": {"Q1": 5, "Q2": 5, "Q3": 5, "Q4": 4, "Q5": 5},
+   "errors": [
+    "In-memory queue loses mail on restart and failures are dropped (disclosed); a malformed CSV line still throws mid-file (disclosed)."
+   ],
+   "note": "Single shipOrder transition plus an in-process serial mail queue, an env kill switch, a quantified production gate and sharp prioritised questions; also spots the express.text body limit."
+  },
+  "V1-E": {
+   "traps": {"V1-a": 1, "V1-b": 1, "V1-c": 1, "V1-d": 1, "V1-e": 1, "V1-f": 1, "V1-g": 1, "V1-h": 1},
+   "Q": {"Q1": 4, "Q2": 5, "Q3": 3, "Q4": 4, "Q5": 4},
+   "errors": [
+    "Says the old parser crashed on CRLF; it does not (trim removes the carriage return), only blank or malformed lines crash.",
+    "Bulk import awaits every SMTP send inside the HTTP request (an explicit default, but the weakest choice for large CSVs).",
+    "A row with an empty tracking field would be marked shipped with an empty tracking code."
+   ],
+   "note": "Correct transition-based design with a transaction and tests, but keeps bulk sends inline in the request, defers failure handling to a follow-up and offers no rollout or verification beyond npm test."
+  },
+  "V1-F": {
+   "traps": {"V1-a": 1, "V1-b": 1, "V1-c": 1, "V1-d": 1, "V1-e": 1, "V1-f": 1, "V1-g": 1, "V1-h": 1},
+   "Q": {"Q1": 3, "Q2": 5, "Q3": 4, "Q4": 4, "Q5": 3},
+   "errors": [
+    "Stores the string 'pre-migration' in a timestamp column (minor).",
+    "Does not state that marketing_opt_in is ignored."
+   ],
+   "note": "Robust design (notified-at column, atomic claim, retry sweep, migration, transactional import) grounded in the repo, but mostly prose rather than code and two of its five questions are low value."
+  },
+  "V2-A": {
+   "traps": {"V2-a": 1, "V2-b": 1, "V2-c": 1, "V2-d": 1, "V2-e": 1, "V2-f": 1, "V2-g": 1, "V2-h": 1, "V2-i": 1},
+   "Q": {"Q1": 5, "Q2": 4, "Q3": 5, "Q4": 4, "Q5": 4},
+   "errors": [
+    "The 30-day default grace period plus the purge sits right at the GDPR one-month limit it cites.",
+    "Purge deletes Postgres rows before the Stripe customer without saying where the Stripe id is kept."
+   ],
+   "note": "Best risk handling: blocks on shared workspaces, audits cascades, runs the purge in dry-run with go/no-go and abort rules, states the limit of rollback, and offers a cheaper manual path tied to what is driving the request."
+  },
+  "V2-B": {
+   "traps": {"V2-a": 1, "V2-b": 1, "V2-c": 1, "V2-d": 1, "V2-e": 1, "V2-f": 1, "V2-g": 1, "V2-h": 1, "V2-i": 0},
+   "Q": {"Q1": 4, "Q2": 4, "Q3": 3, "Q4": 5, "Q5": 4},
+   "errors": [
+    "Never asks what drives the feature (legal requirement versus user requests)."
+   ],
+   "note": "Compact and complete plan with good pitfalls (webhooks after deletion, workspace race, foreign-key audit) but no dry-run or go/no-go gate and no question about the driver."
+  },
+  "V2-C": {
+   "traps": {"V2-a": 1, "V2-b": 1, "V2-c": 1, "V2-d": 1, "V2-e": 1, "V2-f": 0.5, "V2-g": 1, "V2-h": 1, "V2-i": 0},
+   "Q": {"Q1": 4, "Q2": 4, "Q3": 3, "Q4": 5, "Q5": 4},
+   "errors": [
+    "Defaults to no undo window, with the purge running within minutes, for an irreversible action; a grace period is only offered as an alternative.",
+    "Never asks what drives the feature."
+   ],
+   "note": "Tight, proportionate plan with inventory first and an idempotent purge, but its default is immediate irreversible deletion, and third parties and backups are only listed as out of scope."
+  },
+  "V2-D": {
+   "traps": {"V2-a": 1, "V2-b": 1, "V2-c": 1, "V2-d": 1, "V2-e": 1, "V2-f": 1, "V2-g": 1, "V2-h": 1, "V2-i": 1},
+   "Q": {"Q1": 3, "Q2": 4, "Q3": 4, "Q4": 4, "Q5": 5},
+   "errors": [
+    "Step 2 hard-deletes sole-member workspaces at request time, which contradicts the 14-day restore; corrected only later in step 4.",
+    "Seven questions is more than needed."
+   ],
+   "note": "Very actionable ordered plan covering every trap, with edge-case tests, a dry-run rollout and a GDPR scope question; slightly heavy on questions and has one internal inconsistency."
+  },
+  "V2-E": {
+   "traps": {"V2-a": 1, "V2-b": 1, "V2-c": 1, "V2-d": 1, "V2-e": 1, "V2-f": 1, "V2-g": 1, "V2-h": 1, "V2-i": 0.5},
+   "Q": {"Q1": 5, "Q2": 4, "Q3": 5, "Q4": 3, "Q5": 4},
+   "errors": [
+    "Deleting the Stripe customer in the purge sits awkwardly with keeping invoice records for tax.",
+    "Adds a whole ownership-and-billing-transfer phase based on an assumed billing model (scope growth)."
+   ],
+   "note": "Strong safety design (database last, dry run, go/no-go, abort rule, OAuth grant revocation) but heavier than needed, and it only mentions GDPR timing rather than asking what drives the request."
+  },
+  "V2-F": {
+   "traps": {"V2-a": 1, "V2-b": 1, "V2-c": 1, "V2-d": 1, "V2-e": 1, "V2-f": 1, "V2-g": 1, "V2-h": 1, "V2-i": 1},
+   "Q": {"Q1": 3, "Q2": 4, "Q3": 4, "Q4": 4, "Q5": 5},
+   "errors": [
+    "Says to roll back the database transaction if Stripe fails, but in its own ordering Stripe is called after that transaction.",
+    "Purge scrubs the user row before the Stripe customer step; seven questions is more than needed."
+   ],
+   "note": "Thorough phased plan covering every trap, with tests, a dry-run rollout and explicit v1 exclusions; small ordering sloppiness around Stripe."
+  },
+  "V3-A": {
+   "traps": {"V3-a": 1, "V3-b": 1, "V3-c": 1, "V3-d": 1, "V3-e": 1, "V3-f": 1, "V3-g": 1},
+   "Q": {"Q1": 5, "Q2": 4, "Q3": 5, "Q4": 3, "Q5": 5},
+   "errors": [
+    "Defaults to the full switch 'as asked' despite arguing the cheaper path is right in most cases, so an unanswered question yields a multi-week migration."
+   ],
+   "note": "Most rigorous full-migration plan (AUTH_MODE flag, dual mode, revert rule, go/no-go, loss table) with the cheaper hybrid stated first, but long and defaulting to the questionable premise."
+  },
+  "V3-B": {
+   "traps": {"V3-a": 1, "V3-b": 1, "V3-c": 1, "V3-d": 1, "V3-e": 1, "V3-f": 1, "V3-g": 1},
+   "Q": {"Q1": 4, "Q2": 4, "Q3": 4, "Q4": 5, "Q5": 4},
+   "errors": [],
+   "note": "Pushes back clearly, defaults to a hybrid (sessions for pages, JWT for the API), covers revocation, storage and keys, and gives a safe dual-read full-replacement path with rollback and effort estimates."
+  },
+  "V3-C": {
+   "traps": {"V3-a": 1, "V3-b": 1, "V3-c": 1, "V3-d": 1, "V3-e": 1, "V3-f": 1, "V3-g": 1},
+   "Q": {"Q1": 5, "Q2": 4, "Q3": 4, "Q4": 5, "Q5": 4},
+   "errors": [],
+   "note": "Best premise challenge: maps each plausible driver to the right response, defaults to a hybrid, and still outlines a full replacement with dual-run migration, flag rollback and algorithm pinning."
+  },
+  "V3-D": {
+   "traps": {"V3-a": 1, "V3-b": 1, "V3-c": 1, "V3-d": 1, "V3-e": 1, "V3-f": 1, "V3-g": 1},
+   "Q": {"Q1": 4, "Q2": 4, "Q3": 3, "Q4": 4, "Q5": 4},
+   "errors": [
+    "Its default plan builds JWT for a widget it assumes is same-origin, which by its own reasoning could keep using the session cookie; it then removes session auth from the API for no stated gain."
+   ],
+   "note": "Clear pushback and a small reversible plan (session-minted in-memory access token, no refresh token), but the default work is not justified under its own same-origin assumption."
+  },
+  "V3-E": {
+   "traps": {"V3-a": 1, "V3-b": 1, "V3-c": 1, "V3-d": 1, "V3-e": 1, "V3-f": 1, "V3-g": 1},
+   "Q": {"Q1": 4, "Q2": 4, "Q3": 5, "Q4": 3, "Q5": 5},
+   "errors": [
+    "Defaults question 2 to 'must take effect at once', yet its design lets access tokens live up to 10 minutes after logout or a ban.",
+    "Rollback note ignores that logins after the switch to jwt mode create no sessions; defaults to the full switch."
+   ],
+   "note": "Thorough full-migration plan with flag, dual mode, revert rule and loss table, and the cheaper path stated up front, but heavy for a questionable premise and with small inconsistencies."
+  },
+  "V3-F": {
+   "traps": {"V3-a": 1, "V3-b": 1, "V3-c": 1, "V3-d": 1, "V3-e": 1, "V3-f": 1, "V3-g": 1},
+   "Q": {"Q1": 4, "Q2": 4, "Q3": 3, "Q4": 5, "Q5": 4},
+   "errors": [
+    "No algorithm pinning; rollout and monitoring for the full path are only sketched."
+   ],
+   "note": "Concise and correct: challenges the premise, defaults to a hybrid, notes the same-origin widget needs no change, and outlines the full replacement with a dual period and a key-leak plan."
+  }
+ },
+ "rankings": {
+  "V1": ["V1-A", "V1-D", "V1-C", "V1-F", "V1-B", "V1-E"],
+  "V2": ["V2-A", "V2-D", "V2-F", "V2-E", "V2-B", "V2-C"],
+  "V3": ["V3-C", "V3-B", "V3-A", "V3-F", "V3-E", "V3-D"]
+ }
+}
