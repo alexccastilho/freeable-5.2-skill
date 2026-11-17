@@ -1,6 +1,49 @@
-# Default-path, failure-coverage, gate, default and flag patterns
+# Premise, default-path, failure, gate, default, flag and first-step patterns
 
 Sentence patterns to copy. Each has the condition under which it applies and an example from the source tasks. If the condition does not hold, leave the pattern out. A pattern that applies takes one line in the plan unless it holds the plan's main risk.
+
+## Quick reference
+
+| Situation | Do |
+|---|---|
+| What you read contradicts or narrows the request | Premise fact in part 2 (or the opener), before the questions |
+| Request stresses the wrong difficulty | Opener relocates the effort; that part gets its own phase |
+| Costly or irreversible request, cheaper route exists | Three predicates decide which path is planned in full |
+| Unknown blocks the work | Fail-safe default, setting, settling check, use walk; proceed |
+| Number you cannot know | A structure ("targets after the baseline"); no figure |
+| Step touches production or data | Go/no-go, abort rule or revert rule, with a threshold |
+| Standard failure applies | One line in the step it protects |
+| Recalled option name, version, config key | One flag beside it, with the check |
+| Guessed limits or thresholds | Log-only or shadow stage, then enforce |
+| Incident | Contain and preserve evidence before diagnosing |
+| Phase 1 ends in "audit" or "investigate" | Name the file, command or query that starts it |
+| Adjacent problem found | Closing list, outside the diff |
+| Tools available | Run or read before asserting; report the result |
+
+## Premise facts
+
+Applies when you could read code, a schema, configuration or documents. A premise fact is something you saw that contradicts or narrows what the request takes for granted. It goes before the questions, because it changes what the plan can deliver. A finding that does not change the plan goes in "Found, not touched".
+
+Four checks to run while reading:
+
+| Check | What to look at | Line from the source tasks |
+|---|---|---|
+| The named component exists | Routes, modules, jobs, screens the request refers to | "`src/server.js` defines four routes and no middleware other than body parsing" |
+| The data exists and is written on every path | Schema columns, then every statement that writes the table | Migration: every writer to `users` is listed before the cutover relies on the seam |
+| The presumed access control is in place | Middleware, route guards, who can reach the endpoint | "No route has authentication -> the client address is the only key a limit can use; `userId` arrives in the request body and can be set to anything" |
+| The fields relied on are trustworthy | Every writer of the field, defaults, nullability, constraints | Incident: whether a unique constraint exists on the identifier is checked in the schema before the fix relies on it |
+
+Form: `<fact> (<file, line or table>) -> <effect on the request>`. Three or more get their own part with a heading. One or two fold into the opener. When the checks all pass, the opener says the request matches what you read.
+
+When you have seen nothing, the same checks become first steps: the command or query that runs each one (see "First steps").
+
+## Run before you assert
+
+Applies when you have tools that can read or execute. Search for every caller before saying there are none. Open the file before naming a function in it. Run the tests before saying they pass, and report the count. If the environment stops you, say what stopped you in one sentence:
+
+> I have not run the tests: the fixture has no installed dependencies and I could not modify it.
+
+In the plan, each step names its verifying command, query or observation: "a whole-word search for `getUser` returns nothing, then `npm test`"; "send 25 order requests in a loop: the first 20 return 200, the rest 429, and `orders` has 20 new rows".
 
 ## Default path
 
@@ -37,7 +80,7 @@ When the cheaper path is on the way to the requested one, write one plan in stag
 
 Applies to every change that will run in production, including the smallest. Scope restraint decides which features are built. It has no say over this list.
 
-Run the standard failures of the kind of change and give each that applies one line, in the step it belongs to: the protection, or the reason it does not apply.
+Run the standard failures of the kind of change. Each one that applies gets one line inside the step it protects, naming the protection. The lines never form a section or list of their own: a reader finds the protection where the risk is. The table below is for you to run through, and is not a part of any plan.
 
 | Standard failure | Line from the source tasks |
 |---|---|
@@ -49,7 +92,9 @@ Run the standard failures of the kind of change and give each that applies one l
 | Several instances, or a dependency down | Rate limit: counters live in memory per process; correct for one process, and stated |
 | A caller you did not know about | Migration: write privileges revoked at cutover so a missed writer fails loudly |
 
-A line that says "does not apply: single process" is coverage. A missing line is a gap.
+A failure that does not apply gets a line only when a reader would expect the protection and its absence is a decision: "counters are in memory, per process: correct for one process". Otherwise it gets nothing.
+
+Placement, on the rate-limit change. The step that adds the per-address limit holds the shared-office line. The step that sets `TRUST_PROXY` holds the proxy line and its `req.ip` check. The rollout step holds the log-only stage. Nothing is left for a "failure modes" heading.
 
 ## Gates
 
@@ -155,6 +200,19 @@ Applies when an unknown would otherwise block the work. Does not apply to destru
 
 Choose the default whose wrong guess does least damage or is noticed soonest. Check which way it fails. Example: trusting one proxy hop by default fails open when there is no proxy, because a client can then forge the forwarded address. Assuming no proxy fails visibly and is caught by one check.
 
+### D-a2. Walk the default through real use
+
+Applies to every default that a person or program has to live with. Trace it from whoever triggers it and write down the client: a browser following a link or submitting a form, a phone, a command line, a scheduled job, a partner system, staff on a shared machine or address. Then ask whether that client can supply what the default requires (a credential, a header, its own address, a terminal, a deploy) and whether the person will be where the default assumes.
+
+| Use found in the source tasks | What it did to the default |
+|---|---|
+| Warehouse staff upload a file at the end of the day from one office address | No strict per-address limit on the shipping and import routes |
+| The site is served from a project repository, under a path | The tool handles a base path, so links work in both cases |
+| The cutover flag is flipped by an operator during a held write | "The flag must change without a deploy" |
+| Consumers read the table every morning | A deduplicating view goes in front of them today, before the fix |
+
+A default that fails the walk is replaced by one that passes, and the plan names the use that decided it. When you cannot tell which client is used, that is a harm-or-shrink question with the most limited client as the default.
+
 ### D-b. Expose it as a setting
 
 > Default: the app is reached directly, with no proxy. The setting is exposed as `TRUST_PROXY` so it can be corrected without a code change.
@@ -223,6 +281,20 @@ If you can run it, run it and report the result. The flag is for when you cannot
 > I am reading "last Tuesday" as 10 November 2026. If you mean 3 November, the steps are the same with a longer window.
 
 Write the date into queries and schedules too; no `<last Monday>` placeholders when today's date is known.
+
+## First steps
+
+Applies to every plan and every bounded change. Phase 1 ends with three to six actions that need no answer from the user. Each names something real.
+
+| You have | First steps are | Example from the source tasks |
+|---|---|---|
+| Read the code, bounded change | The diff, the test file, the commands | The edit to `src/server.js`, `test/rateLimit.test.js`, `npm install`, `npm test` |
+| Read the code, larger work | File and function per step, plus the command that checks it | "`placeOrder` in `src/orders/orderService.js` waits for the mail send before responding", then the change |
+| Seen nothing | The exact query or command that produces the first artefact | `SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE REFERENCED_TABLE_NAME = 'users';` |
+| An incident | The read-only query that sizes the damage, with the date written in | A count of rows grouped by the business key having more than one, loaded on or after 10 November 2026 |
+| A vague request | The measurement that starts the baseline, and who gives access | Timing for the most-used screens and endpoints, split by customer size |
+
+Names you have not read are not written: say "the module that writes `users`" and give the search that finds it. A first step that says only "audit", "design" or "investigate" is rewritten until it has an object and a command.
 
 ## Order and loss
 

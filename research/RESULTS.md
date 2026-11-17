@@ -1,8 +1,8 @@
 # Results: can a skill make Opus 5.5 plan like Fable 5.2?
 
-**Short answer.** The skill reliably installs a distinctive set of planning moves in Opus 5.5. Blind judges rate the resulting plans higher on clarifying questions and risk handling, and (in v2) on proportionality, with zero scope creep. It does **not** raise the trap-catch rate, it costs grounding and actionability, and overall rank is mixed.
+**Short answer (after round 3, skill v3).** On 4 fresh software-planning tasks, blind judges scored Opus 5.5 + skill v3 at **8.7 out of 10**, against 7.5 for bare Opus 5.5 and 7.4 for bare Fable 5.2. v3 was ahead of both bare models on every task, caught the most planted traps (93.8%) and committed no scope creep. The rounds before v3 found smaller and more mixed gains (see rounds 1 and 2 below), and the samples are still small.
 
-Bare Fable 5.2, run without any review tool, did **not** out-plan bare Opus 5.5 on average across our 9 held-out tasks. By mean rank it was ahead on 3 of 9 (V1, V4, V6) and behind on 6. In this harness, unaided Fable is not a better target than Opus. What the skill encodes is closer to the pattern Fable shows *when it plans with a review step*.
+Bare Fable 5.2, run without any review tool, did **not** out-plan bare Opus 5.5 on average across the 9 held-out tasks of rounds 1 and 2, and scored 7.39 against 7.52 in round 3. By mean rank in rounds 1 and 2 it was ahead on 3 of 9 (V1, V4, V6) and behind on 6. In this harness, unaided Fable is not a better target than Opus. What the skill encodes is closer to the pattern Fable shows *when it plans with a review step*.
 
 All numbers come from blind, randomised, two-judge evaluation (one Fable 5.2 judge and one Opus 5.5 judge per task), with answer keys written before any response existed. Each task was run twice per arm. The samples are small: read the differences as directional, not significant.
 
@@ -18,6 +18,10 @@ Extraction (8 tasks E1–E8)  ─►  delta analysis (Fable vs bare Opus)  ─�
                                                      skill v2 written by Fable (no access to eval files)
                                                                               ▼
                                                      Round 2: 3 fresh tasks (H1–H3), 4 arms × 2 reps
+                                                                              ▼
+                                                     skill v3 by Fable: v1 + v2 + unaided Fable + built-in review
+                                                                              ▼
+                                                     Round 3: 4 fresh software tasks (R1–R4), 4 arms × 2 reps, 0–10
 ```
 
 - **Arms.** `opus` = Opus 5.5, no skill. `skill` = Opus 5.5 told to read `SKILL.md` first. `fable` = Fable 5.2, no skill. Every arm got an identical brief. Skills, plan mode, subagents and the advisor tool were forbidden, so we measured models, not plugins.
@@ -77,7 +81,46 @@ Judges disagree on overall rank. The Fable judge puts bare Opus first (3.17, the
 - **V3 (JWT):** both runs now default to keeping sessions, with JWT only for an API if needed and the full switch as a branch selected by the driver question.
 - **V5 (caching):** both runs include thundering-herd protection (post-import warming; one run adds a rebuild lock), and both ask the staleness tolerance as question 1.
 
-**Why v2 ships over v1:** v1 scored higher on quality and rank in round 2. But it writes 23% more than bare Opus and defaulted to a costly, questionable premise in round 1. v2 is shorter than bare Opus and keeps the zero scope creep. If you prefer v1's thoroughness, it is frozen in `research/evaluation/round1/skill-v1/`. **What it did not fix, or cost:** grounding in the existing code. On the brownfield task (H1), skill runs were less likely to state premise-breaking facts found in the repository, such as "there is no admin UI" or "the schema has no line items", and the failure-mode checklist read as padding to one judge.
+**Why v2 shipped over v1 (superseded by v3 in round 3):** v1 scored higher on quality and rank in round 2. But it writes 23% more than bare Opus and defaulted to a costly, questionable premise in round 1. v2 is shorter than bare Opus and keeps the zero scope creep. If you prefer v1's thoroughness, it is frozen in `research/evaluation/round1/skill-v1/`. **What it did not fix, or cost:** grounding in the existing code. On the brownfield task (H1), skill runs were less likely to state premise-breaking facts found in the repository, such as "there is no admin UI" or "the schema has no line items", and the failure-mode checklist read as padding to one judge.
+
+## Round 3: 4 fresh software tasks (R1–R4), skill v3, score 0–10
+
+The tasks were all software development or improvement work:
+- **R1:** a production-readiness review of the shopmini repository.
+- **R2:** a React Native crash regression after a release.
+- **R3:** adding English and Spanish to a Next.js shop.
+- **R4:** speeding up a 6-second WooCommerce store.
+
+A Fable 5.2 agent that had not seen the skill wrote the answer key and a 0–10 scoring guide before any response existed. Each task had one blind Fable judge and one blind Opus judge. The files are in `research/evaluation/round3/`.
+
+**v3:** Fable wrote it by merging four sources:
+- **v1:** its richness of questions, gates and risk content;
+- **v2:** its confirmed fixes, namely the default-path rule, failure coverage inside steps, and the driver and tolerance questions;
+- **unaided Fable:** its concision and its cheaper-path, flagging and date moves;
+- **new in v3:** premise facts found in the code, defaults checked against the user's real workflow, concrete first steps, run-before-assert when tools exist, and a silent nine-check self-review before output.
+
+| Arm | Score 0–10 | Fable judge | Opus judge | Traps net | Scope creep | Rank (1 = best of 8) | Words |
+|---|---|---|---|---|---|---|---|
+| **Opus 5.5 + skill v3** | **8.69** | **8.86** | **8.51** | **93.8%** | **0** | **2.50** | 1,454 |
+| Opus 5.5 + skill v1 | 8.46 | 8.61 | 8.31 | 91.2% | 0 | 3.00 | 1,358 |
+| Opus 5.5 | 7.52 | 7.70 | 7.34 | 87.2% | 3 | 5.88 | 1,344 |
+| Fable 5.2 | 7.39 | 7.50 | 7.28 | 84.4% | 0 | 6.62 | 1,013 |
+
+| Task | Opus | Fable | Opus + v1 | Opus + v3 |
+|---|---|---|---|---|
+| R1 shopmini readiness | 7.35 | 7.53 | 8.23 | **8.57** |
+| R2 mobile crash regression | 8.00 | 7.28 | **8.35** | 8.18 |
+| R3 i18n of a Next.js shop | 7.38 | 7.67 | 8.97 | **9.08** |
+| R4 WooCommerce speed | 7.35 | 7.08 | 8.30 | **8.93** |
+
+- **v3 against bare Opus:** +1.17 on average, ahead on 4 of 4 tasks (+0.18 to +1.70).
+- **v3 against bare Fable:** +1.30, ahead on 4 of 4.
+- **v3 against v1:** +0.23, ahead on 3 of 4.
+- **Spread:** the lowest v3 response scored 7.6, while the median bare-Opus response scored 7.6.
+- **Significance:** with only 4 tasks, a sign-flip test cannot go below p = 0.125 even when every task favours one arm. "4 of 4" is the honest statement, not "significant".
+- **Judges agree on the order:** v3 > v1 > Opus > Fable, for both the Fable judge and the Opus judge.
+- **Errors flagged by judges:** similar in kind across arms. The most common one is the claim that SQLite will not enforce a foreign key, when better-sqlite3 enables foreign keys by default; it appears in bare-Opus and v3 runs alike. v3 has the most flagged items (18, against 15 for bare Opus), mostly omissions of the "also check X" kind.
+- **Length:** v3 is about 8% longer than bare Opus, inside its own target of +10%.
 
 ## Verdict on the user's question
 
@@ -85,7 +128,7 @@ Judges disagree on overall rank. The Fable judge puts bare Opus first (3.17, the
 
 - **Like unaided Fable: no.** On move presence, Opus with the skill (0.84–0.93) is further from unaided Fable (0.40–0.47) than bare Opus is (0.44–0.45).
 - **Like Fable with a reviewer: closer.** Reviewed Fable scored 0.86 on extraction tasks. That anchor is weak and partly circular: D1–D11 were catalogued from those same traces, and it rests on 4 tasks, one run and one judge.
-- **On outcome quality:**
+- **On outcome quality, rounds 1 and 2 (v1, v2):**
   - **Better:** blind judges rate the skill's plans higher on questions, risk handling and (v2) proportionality, with no scope creep.
   - **Worse:** they do not catch more planted traps than bare Opus. Grounding drops (4.75 → 4.08 for v2), and so does actionability (4.83 → 4.17).
   - **Mixed:** overall rank. One judge ranks bare Opus above both skill versions.
@@ -95,17 +138,18 @@ Judges disagree on overall rank. The Fable judge puts bare Opus first (3.17, the
   - **Unrecorded effort:** subagent reasoning effort was not recorded.
   - **Shared context:** each arm planned 2–4 tasks in one context.
   - **Forced read:** the skill was delivered by a forced read, so triggering from its `description` is untested.
-- **Where it helps:** most on multi-phase, risky or ambiguous work, and least on code-reading-heavy brownfield tasks.
+- **On outcome quality, round 3 (v3):** Opus + v3 scored 8.69 out of 10, against 7.52 for bare Opus and 7.39 for bare Fable, and was ahead of both on all 4 tasks. That includes the brownfield code-review task (R1: 8.57 against 7.35), where v1 and v2 had lost grounding. v3 also caught the most traps. For software planning, v3 is the strongest result in this study.
+- **Where it helps:** most on multi-phase, risky or ambiguous work. With v3, the brownfield gap of v1 and v2 closed on the one brownfield task measured.
 
 ## Known gaps and next steps
 
-1. **Grounding.** Add an opener slot for "facts found that contradict or narrow the request" (missing component, missing data, absent auth), and keep failure-mode lines inside steps only.
-2. **Coverage of the first step.** Check that the chosen default works for the user's actual workflow. For example, a header token cannot be sent by a browser download link.
-3. **Sample size.** Re-measure with more tasks and runs, and use judges blind to output format (for example, normalise headings before judging).
+1. **Grounding and first steps.** These were the gaps of v1 and v2. v3 addresses them with premise facts, a check of each default against the real workflow, and concrete first steps. On R1, the brownfield task, it improved, but that is a single task.
+2. **Fact checks.** Judges still flag claims stated as fact that the code contradicts, such as the foreign-key behaviour in better-sqlite3. v3's run-before-assert rule only helps when the model actually runs or reads the code.
+3. **Sample size.** Re-measure with more tasks and runs, and use judges blind to output format (for example, normalise headings before judging). Also test triggering from the `description`, without a forced read.
 
 ## Where everything is
 
 - `research/extraction/`: tasks, raw traces (with and without the advisor), Fable's self-report, delta analysis.
-- `research/evaluation/round1/`, `round2/`: tasks, answer keys, all runs, judge JSON, mapping, `scores.txt`, frozen skill snapshots (v1, v2).
+- `research/evaluation/round1/`, `round2/`, `round3/`: tasks, answer keys, all runs, judge JSON, mapping, `scores.txt`, frozen skill snapshots (v1, v2, v3).
 - `research/evaluation/*.py`: blinding and scoring scripts.
 - `research/fixtures/shopmini/`: the small repository used by brownfield tasks.

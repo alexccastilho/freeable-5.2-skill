@@ -1,0 +1,22 @@
+arm                    score0-10  fable-judge  opus-judge  traps-net%  over  rank(1-8)  errors  words
+Opus 5.5 + skill v3      8.69       8.86        8.51       93.8      0    2.50      18    1454
+Opus 5.5 + skill v1      8.46       8.61        8.31       91.2      0    3.00      13    1358
+Opus 5.5 puro            7.52       7.70        7.34       87.2      3    5.88      15    1344
+Fable 5.2 puro           7.39       7.50        7.28       84.4      0    6.62      12    1013
+
+Per task score 0-10 (both judges)
+R1 opus=7.35  fable=7.53  skillv1=8.23  skillv3=8.57
+R2 opus=8.00  fable=7.28  skillv1=8.35  skillv3=8.18
+R3 opus=7.38  fable=7.67  skillv1=8.97  skillv3=9.08
+R4 opus=7.35  fable=7.08  skillv1=8.30  skillv3=8.93
+
+Paired by task (sign-flip permutation over task means)
+skillv3 - opus: +1.17  per task [1.22, 0.18, 1.7, 1.58]  p~0.128
+skillv3 - fable: +1.30  per task [1.05, 0.9, 1.4, 1.85]  p~0.128
+skillv3 - skillv1: +0.23  per task [0.35, -0.17, 0.1, 0.62]  p~0.376
+skillv1 - opus: +0.94  per task [0.88, 0.35, 1.6, 0.95]  p~0.128
+fable - opus: -0.13  per task [0.18, -0.72, 0.3, -0.27]  p~0.752
+
+Per response pairs (all 16 per arm: 4 tasks x 2 reps x 2 judges)
+skillv3 min/median/max 7.6 8.8 9.3 | opus 6.6 7.6 8.9
+skillv3 min/median/max 7.6 8.8 9.3 | fable 6.5 7.5 8.0

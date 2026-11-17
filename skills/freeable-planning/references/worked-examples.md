@@ -1,6 +1,6 @@
 # Worked examples
 
-Drawn from eight paired planning traces. "Baseline" is what a capable model wrote with no skill. "Target" is the shape this skill asks for. Target quotes come from reference traces written with a review step; where v2 changes the target, the example says "v2 rule applied" and the text is constructed from the rule, with no trace behind it. Where the baseline did something better, the target keeps it.
+Drawn from eight paired planning traces. "Baseline" is what a capable model wrote with no skill. "Target" is the shape this skill asks for. Target quotes come from reference traces written with a review step; where a later version changes the target, the example says "v2 rule applied" or "v3 rule applied" and the text is constructed from the rule, with no trace behind it. Where the baseline did something better, the target keeps it.
 
 ## 1. Migration: say where the work is
 
@@ -22,6 +22,8 @@ Then:
 - A go/no-go list of seven measurable conditions.
 - Tolerance questions kept in the five, each with a branch: "What does 'zero downtime' allow? Default: one hold of about 10 seconds. If the answer is 'no pause at all', the cutover changes to application dual-writes."
 - Write privileges revoked at cutover "so a missed writer fails loudly".
+
+**First steps (v3 rule applied).** Nothing has been seen, so phase 1 ends with commands: the `information_schema.KEY_COLUMN_USAGE` query for foreign keys that reference `users`; a code search for `JOIN users` and for every statement that writes the table; the MySQL account list, to find writers outside the application.
 
 **Kept from the baseline:** weigh a reverse-fed read-only copy of `users` in MySQL, which keeps joins working and may shrink phase 1 for read paths. Encrypt the pipeline, since the table holds personal data.
 
@@ -46,7 +48,19 @@ Then:
 
 **Kept from the baseline:** deploy in log-only mode for a day or two before enforcing, because the limits are guesses. Report the other findings too (order IDs can be enumerated; the import crashes on a malformed line), one line each, outside the diff.
 
-**Failure coverage (v2 rule applied).** The diff stays at one file. The failure list stays complete, one line each: shared office address (no strict limit on those routes); proxy in front (everyone in one bucket, settled by the `req.ip` check); several app instances ("the counters live in memory, per process": correct for one process, stated); a bot that rotates addresses (not covered, said so); guessed limits (log-only stage). The reference trace had the small diff and missed the log-only stage. That is the error this rule prevents.
+**Premise facts (v3 rule applied).** The reference trace had these under "What I found in the repository". They come before the questions because each one narrows what a rate limit can do:
+
+> - No route has authentication (`src/server.js`), and `userId` arrives in the request body -> the client address is the only key a limit can use.
+> - `POST /orders` writes a row and waits for an e-mail send (`src/orders/orderService.js`) -> this is the route to limit strictly.
+> - No deployment configuration in the repository -> I cannot see whether a proxy sits in front; question 1.
+
+The missing authentication has two jobs: here it shapes the design, and in the closing list it is named as work not done.
+
+**Use walk (v3 rule applied).** The staff routes are used from one office address at the end of the day, so a strict limit there locks out the warehouse. The default keeps those routes on the loose limit and says so.
+
+**Failure lines inside the steps (v2 rule, v3 placement).** The diff stays at one file. Each failure sits in the step it protects: the limit step holds the shared-office line; the `TRUST_PROXY` step holds the proxy line, the `req.ip` check, and "counters live in memory, per process: correct for one process"; the rollout step holds the log-only stage; the limits paragraph says a bot that rotates addresses is not covered. There is no failure-mode heading. The reference trace had the small diff and missed the log-only stage. That is the error the coverage rule prevents.
+
+**Shape, from the trace written without a review step.** It opened with one paragraph naming the single thing to settle (one shared address would throttle all legitimate traffic) and went straight to the diff. Keep that shape. Its extra module and third limit are what the smallest-change rule removes.
 
 ## 3. Trivial change: no ritual
 
@@ -86,6 +100,6 @@ Neither trace had all of this. The target combines them.
 | Two-day offsite in three months | Save-the-date in week 1, venue signed in weeks 2-3; a dollar budget table built on an assumed per-person figure | "Sign the venue and room block by the end of week 2. This is the one deadline that matters. Send a save-the-date the day the contract is signed." Budget: "Not set. I give a percentage split below; you supply the total." Keep the baseline's contract terms (attrition clause, minimums). |
 | Single-tenant to shared database | Schema-per-customer dismissed in one clause; primary-key choice left conditional | Reference trace: "Before committing, check one thing: what the goal is. If it is mainly to cut the cost of running 60 databases, a schema per customer inside one database gets most of that for a fraction of the work." It then planned shared tables by default. **v2 rule applied:** the shared-table design takes months and merges data (a); a schema per customer can be undone and leaves shared tables open (b); it serves the cost driver, the likeliest with none stated (c). So the default flips: question 1 is "What is driving this?", the plan is the schema-per-customer stage, and shared tables are a six-line branch selected by "cross-customer features or growth to hundreds of customers". The branch keeps a verdict per key option and the "what you lose" items, one line each. Keep the baseline's per-customer configuration and secrets, and ask team size before estimating. |
 
-## 6. Length (v2 rule applied)
+## 6. Length (v2 rule, kept in v3)
 
-The reference traces ran 10 to 37% longer than the baseline on every real planning task. v2 does not copy that. For the migration in example 1, the parts that hold the main risk (the decoupling phase and the cutover with its abort rule) keep their length. These parts shrink to one line each: the reason reads do not move first, the rename-before-drop rule, the connection-cost note. The risk table goes, because each of its rows is already a gate or a step. For the offsite, the plan is the deadline, the dated timeline and the ranked questions; the headings with fewer than three lines under them fold into the timeline.
+The reference traces ran 10 to 37% longer than the baseline on every real planning task. The skill does not copy that: the target is the baseline's length plus 10% at most, and the premise facts and first steps take their words from restatement. For the migration in example 1, the parts that hold the main risk (the decoupling phase and the cutover with its abort rule) keep their length. These parts shrink to one line each: the reason reads do not move first, the rename-before-drop rule, the connection-cost note. The risk table goes, because each of its rows is already a gate or a step. For the offsite, the plan is the deadline, the dated timeline and the ranked questions; the headings with fewer than three lines under them fold into the timeline.

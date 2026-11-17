@@ -1,12 +1,12 @@
 # Question bank by task type
 
-Use this when filling part 2 of the output contract. The questions are the ones asked in the source traces. Most of them you would ask anyway; what this file adds is the form of the default and the filter that keeps the list short.
+Use this when filling part 3 of the output contract. The questions are the ones asked in the source traces. Most of them you would ask anyway; what this file adds is the form of the default and the filter that keeps the list short.
 
 ## Filter before you ask
 
 Run each candidate through these in order. Stop at the first that applies.
 
-1. **You can find the answer by looking** (repository, files, conversation). Look. Do not ask.
+1. **You can find the answer by looking** (repository, files, conversation). Look. Do not ask. If what you find contradicts or narrows the request, it is a premise fact and goes before the questions.
 2. **The default is near-certain and a wrong guess is cheap.** Write it as a stated assumption in one line, not as a question. Example: "Assumed under a few thousand notes, so a full rebuild each time."
 3. **The answer changes a detail only.** Take the default, state it, move on.
 4. **The answer changes the structure of the plan, or a wrong guess does damage.** Ask it, with a default, and write the branch.
@@ -48,6 +48,8 @@ Test: if two answers lead to two different mechanisms, it is a tolerance questio
 - "Is the load append-only, or can the vendor send corrections?"
 - "Which tables have foreign keys to `users`, and which queries join to it or write to it inside a larger transaction?"
 - "Are integer record IDs visible outside the app?"
+
+- "From what client is this used (browser, phone, command line, another service)?" Ask it when the use walk in `gates-and-defaults.md` cannot be completed from what you read. Default: the most limited client.
 
 **Resource and access questions.** They ask what you can see and who will do the work. Ask them before giving any estimate.
 
