@@ -76,7 +76,9 @@ Close the block with the ranking: "Answer first: 1, 2 and 4. With those I can sk
 
 ## Questions by task type
 
-"Ask" means it survived the filter in the traces. "Assume" means state it as an assumption unless the context makes it doubtful.
+"Ask" means it survived the filter in the traces. "Assume" means state it as an assumption unless the context makes it doubtful. Each table holds five "Ask" rows at most, in cap order (driver, tolerance, harm or shrink, access).
+
+The rows come from one source task per type (a rate limit, a nightly load, a table migration, an offsite and so on). Take the kind of question, not its wording: for a webhook, "who are the legitimate callers" becomes "which senders, and do they retry"; for an export, "what is normal peak usage" becomes "how many rows in the largest export".
 
 ### Greenfield tool
 
@@ -94,9 +96,9 @@ Close the block with the ranking: "Answer first: 1, 2 and 4. With those I can sk
 
 | Question | Default, as a plan action | Ask or assume |
 |---|---|---|
-| What sits between the client and the app (proxy, load balancer, CDN)? | The reading that fails safe, exposed as a setting, plus one check in the deployed environment | Ask, first |
+| What prompted this (an incident, a customer, a planned feature; for an attack: which route, what rate, how many sources)? | The simplest reading; say what the change does not cover if it was worse | Ask, first: driver |
+| What sits between the client and the app (proxy, load balancer, CDN)? | The reading that fails safe, exposed as a setting, plus one check in the deployed environment | Ask |
 | Who are the legitimate callers, and do they share an identity or address? | They may share one, so no strict limit where that would block them | Ask |
-| What happened (which route, what rate, how many sources)? | The simplest reading; say what the change does not cover if it was worse | Ask: driver |
 | What is normal peak usage? | Unknown; parameters are settings, labelled as guesses, with an observe-only stage before enforcement | Ask |
 | Is adding the standard dependency acceptable? | Yes | Assume |
 | Can the adjacent problem you found be fixed in the same change? | No; it goes in "Found, not touched" | Do not ask; list it |
@@ -105,23 +107,23 @@ Close the block with the ranking: "Answer first: 1, 2 and 4. With those I can sk
 
 | Question | Default, as a plan action | Ask or assume |
 |---|---|---|
+| Who consumes the affected data, and can they tolerate another bad night? | Consumers exist and cannot; a guard goes in today, and they are told after cleanup | Ask, first: tolerance |
 | What identifies a record uniquely? | A stable source ID; the first step tests this | Ask |
-| Is there a constraint on that identifier today? | No | Assume, then check |
-| What changed around the start date? | Unknown; a named step finds it | Ask |
-| Who consumes the affected data, and can they tolerate another bad night? | Consumers exist and cannot; a guard goes in today, and they are told after cleanup | Ask: tolerance |
-| Can I read production and the logs? | Yes; otherwise someone with access runs the first step | Ask |
 | Can the source legitimately send corrections? | No; if yes, the fix becomes update-on-conflict instead of skip | Ask: it changes the fix |
+| What changed around the start date? | Unknown; a named step finds it | Ask |
 | Are the raw inputs still retrievable, and for how long? | Yes; check retention before relying on it | Ask |
-| Can the job be paused today? | A guard yes; a pause only with the owner's go-ahead | Ask |
+| Is there a constraint on that identifier today? | No | Assume, then check |
+| Can I read production and the logs? | Yes; otherwise someone with access runs the first step | Assume |
+| Can the job be paused today? | A guard yes; a pause only with the owner's go-ahead | Assume |
 
 ### Vague request ("make it faster", "make it better")
 
 | Question | Default, as a plan action | Ask or assume |
 |---|---|---|
 | What prompted this? | Complaints about specific parts, no measurements yet | Ask, first: driver |
-| Which part, and for whom? | Unknown; measure the most-used screens and endpoints, split by customer size | Ask |
 | What would count as good enough? | Targets proposed after the baseline; none invented now | Ask: tolerance |
-| What is already measured? | Little; step 1 adds instrumentation | Ask |
+| Which part, and for whom? | Unknown; measure the most-used screens and endpoints, split by customer size | Ask |
+| What is already measured? | Little; step 1 adds instrumentation | Assume, then check |
 | Can I see the code and the monitoring? | No access assumed; first step is getting it | Ask |
 | How much time is this worth, and what is off limits? | No rewrites, framework changes or infrastructure moves | Ask |
 | What is the stack underneath? | Mainstream choices | Assume |
@@ -134,7 +136,7 @@ Close the block with the ranking: "Answer first: 1, 2 and 4. With those I can sk
 | What does "zero downtime" allow (a few seconds of held writes, none failing)? | Yes, once, about 10 seconds; if no, the cutover design changes | Ask: tolerance, it changes the cutover |
 | What references, joins or shares a transaction with the thing being moved? | Several; they are decoupled first | Ask |
 | Managed or self-hosted; is the change stream available? | Available; a preliminary phase checks it | Ask |
-| What else writes to it? | A few jobs, all changeable; privileges revoked at cutover so a missed writer fails loudly | Ask |
+| What else writes to it? | A few jobs, all changeable; privileges revoked at cutover so a missed writer fails loudly | Assume, then check |
 | Is there one data-access layer? | No; it is consolidated first | Assume |
 | Must a read after a write see it? | Yes; reads stay on the old store until writes move | Ask: tolerance, it sets the read order |
 | Write rate? | Measured in the preliminary phase | Assume |

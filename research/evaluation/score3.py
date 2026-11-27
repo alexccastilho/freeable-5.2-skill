@@ -2,13 +2,12 @@
 
 Usage: python -I score3.py <judge_out_dir> <mapping.json> <runs_dir>
 """
-import json, random, sys
-from collections import defaultdict
+import itertools, json, statistics, sys
 from pathlib import Path
 
 out_dir, mapping, runs = Path(sys.argv[1]), json.loads(Path(sys.argv[2]).read_text()), Path(sys.argv[3])
 ARMS = ["opus", "fable", "skillv1", "skillv3"]
-LABEL = {"opus": "Opus 5.5 puro", "fable": "Fable 5.2 puro", "skillv1": "Opus 5.5 + skill v1", "skillv3": "Opus 5.5 + skill v3"}
+LABEL = {"opus": "Opus 5.5 bare", "fable": "Fable 5.2 bare", "skillv1": "Opus 5.5 + skill v1", "skillv3": "Opus 5.5 + skill v3"}
 words = {f.stem: len(f.read_text(encoding="utf-8").split()) for f in runs.glob("*.md")}
 rows = []
 for jf in sorted(out_dir.glob("*.json")):
@@ -37,14 +36,16 @@ print("\nPer task score 0-10 (both judges)")
 tasks = sorted({r["task"] for r in rows})
 for t in tasks:
     print(t, "  ".join(f"{a}={mean([r['score'] for r in rows if r['arm']==a and r['task']==t]):.2f}" for a in ARMS))
-print("\nPaired by task (sign-flip permutation over task means)")
+print("\nPaired by task (exact two-sided sign-flip test over task means)")
 tab = {(t, a): mean([r["score"] for r in rows if r["arm"] == a and r["task"] == t]) for t in tasks for a in ARMS}
 for x, y in [("skillv3", "opus"), ("skillv3", "fable"), ("skillv3", "skillv1"), ("skillv1", "opus"), ("fable", "opus")]:
     d = [tab[(t, x)] - tab[(t, y)] for t in tasks]
-    obs = mean(d); rng = random.Random(7); N = 20000
-    p = sum(abs(mean([v * rng.choice((1, -1)) for v in d])) >= abs(obs) - 1e-12 for _ in range(N)) / N
-    print(f"{x} - {y}: {obs:+.2f}  per task {[round(v, 2) for v in d]}  p~{p:.3f}")
+    obs = mean(d)
+    flips = list(itertools.product((1, -1), repeat=len(d)))
+    p = sum(abs(mean([v * s for v, s in zip(d, sg)])) >= abs(obs) - 1e-12 for sg in flips) / len(flips)
+    print(f"{x} - {y}: {obs:+.2f}  per task {[round(v, 2) for v in d]}  p={p:.3f}")
 print("\nPer response pairs (all 16 per arm: 4 tasks x 2 reps x 2 judges)")
 for x, y in [("skillv3", "opus"), ("skillv3", "fable")]:
     a = sorted(r["score"] for r in rows if r["arm"] == x); b = sorted(r["score"] for r in rows if r["arm"] == y)
-    print(x, "min/median/max", a[0], a[len(a)//2], a[-1], "|", y, b[0], b[len(b)//2], b[-1])
+    med = lambda s: round(statistics.median(s), 2)
+    print(x, "min/median/max", a[0], med(a), a[-1], "|", y, b[0], med(b), b[-1])

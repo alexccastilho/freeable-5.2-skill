@@ -1,0 +1,24 @@
+== fable-R4
+skillv3-r1-R4      score  9.1 rank 1 traps 100.0% err 3
+skillv31-r1-R4     score  9.0 rank 2 traps  90.0% err 4
+skillv3-r2-R4      score  8.7 rank 3 traps  95.0% err 4
+skillv1-r1-R4      score  8.4 rank 4 traps  90.0% err 2
+skillv1-r2-R4      score  8.3 rank 5 traps  90.0% err 3
+opus-r1-R4         score  7.6 rank 6 traps  90.0% err 4
+fable-r2-R4        score  7.5 rank 7 traps  85.0% err 4
+opus-r2-R4         score  6.7 rank 8 traps  80.0% err 4
+fable-r1-R4        score  6.3 rank 9 traps  70.0% err 4
+  v3.1 why: The strongest safety design of the set (cache gate and abort rule, variant-pricing question, staging e-mails off, failed-order monitoring, deactivate rather than delete) on a properly branched, measured plan, held back slightly by no firm targets and thin plugin protection.
+  v3.1 errors: ['No committed numeric target (2.5 s LCP is only a reference); checkout is not in the measured URL set and INP is not named', 'Says a host move can be reversed by keeping the old account, without addressing orders placed on the new host meanwhile', 'Nonce lifetime stated as 24 hours (hedged); the usable window is 12-24 hours, so a cache lifetime just under 24 hours can still fail', 'Business-critical plugins (payment, shipping, ERP) are not explicitly protected; cart fragments not mentioned']
+== opus-R4
+skillv3-r1-R4      score  9.2 rank 1 traps 100.0% err 0
+skillv3-r2-R4      score  8.9 rank 2 traps  95.0% err 1
+skillv31-r1-R4     score  8.8 rank 3 traps  90.0% err 0
+skillv1-r2-R4      score  8.4 rank 4 traps  90.0% err 0
+skillv1-r1-R4      score  8.3 rank 5 traps  90.0% err 0
+fable-r2-R4        score  7.5 rank 6 traps  85.0% err 0
+opus-r1-R4         score  7.3 rank 7 traps  80.0% err 0
+opus-r2-R4         score  6.8 rank 8 traps  75.0% err 1
+fable-r1-R4        score  6.5 rank 9 traps  70.0% err 0
+  v3.1 why: Excellent safety and caching detail (nonce lifetime, purge on stock change, abort rule, no JS delay on checkout, failed-order monitoring); it sets no numeric targets and treats the host move lightly.
+  v3.1 errors: []

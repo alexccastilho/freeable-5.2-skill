@@ -14,6 +14,8 @@ Sentence patterns to copy. Each has the condition under which it applies and an 
 | Step touches production or data | Go/no-go, abort rule or revert rule, with a threshold |
 | Standard failure applies | One line in the step it protects |
 | Recalled option name, version, config key | One flag beside it, with the check |
+| Claim about a library or platform default | Read it in the installed version's docs or run it; otherwise flag it |
+| Unrun command or query in the first steps | Name the version it assumes |
 | Guessed limits or thresholds | Log-only or shadow stage, then enforce |
 | Incident | Contain and preserve evidence before diagnosing |
 | Phase 1 ends in "audit" or "investigate" | Name the file, command or query that starts it |
@@ -281,6 +283,16 @@ If you can run it, run it and report the result. The flag is for when you cannot
 > I am reading "last Tuesday" as 10 November 2026. If you mean 3 November, the steps are the same with a longer window.
 
 Write the date into queries and schedules too; no `<last Monday>` placeholders when today's date is known.
+
+### F5. Library defaults and version-bound commands
+
+A claim about what a library or platform does by default is a recalled specific, and the most expensive kind: plans built on it schedule work that is not needed, or skip work that is. Read the default in the installed version's documentation or run it. Otherwise flag it:
+
+> The client calls pass no `timeout`. I recall that this HTTP library waits forever by default, but I have not checked the installed version; its documentation for "timeout" settles whether step 3 is needed.
+
+A command or query in the first steps that you did not run names the version it assumes, so the reader knows when to doubt it:
+
+> `git switch -c fix/retry` (Git 2.23 or later; on older versions, `git checkout -b fix/retry`).
 
 ## First steps
 
