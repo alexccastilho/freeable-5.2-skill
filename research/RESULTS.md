@@ -119,8 +119,24 @@ A Fable 5.2 agent that had not seen the skill wrote the answer key and a 0–10 
 - **Spread:** the lowest v3 response scored 7.6, while the median bare-Opus response scored 7.6.
 - **Significance:** with only 4 tasks, a sign-flip test cannot go below p = 0.125 even when every task favours one arm. "4 of 4" is the honest statement, not "significant".
 - **Judges agree on the order:** v3 > v1 > Opus > Fable, for both the Fable judge and the Opus judge.
-- **Errors flagged by judges:** similar in kind across arms. The most common one is the claim that SQLite will not enforce a foreign key, when better-sqlite3 enables foreign keys by default; it appears in bare-Opus and v3 runs alike. v3 has the most flagged items (18, against 15 for bare Opus), mostly omissions of the "also check X" kind.
-- **Length:** v3 is about 8% longer than bare Opus, inside its own target of +10%.
+- **Errors flagged by judges:** similar in kind across arms. The most common one is the claim that SQLite will not enforce a foreign key, when better-sqlite3 enables foreign keys by default; it appears in bare-Opus and v3 runs alike. v3 has the most flagged items (18, against 15 for bare Opus, 13 for v1 and 12 for bare Fable). About half are omissions of the "also check X" kind. The rest are technical errors (the foreign-key claim, flagged by both judges on one run; backups scheduled after the schema changes they should protect; a JSON body said to crash the process; a wrong date; a WordPress autoload query that misses values added in 6.6; a content freeze that does not stop orders splitting between hosts) and risks left unflagged (rolling an OTA bundle or a whole build back over data or native modules changed by 4.2). The other arms' errors were not classified the same way, so no comparison of error kinds is made.
+- **Length:** v3 is about 8% longer than bare Opus on average, inside its own target of +10%. Per task it is not: +7.8% on R1, +14.2% on R2, +0.1% on R3 and +11.8% on R4. No v3 plan was under 1,243 words, against a stated ceiling of about 1,000. v3.1 replaces that rule (see below).
+
+## v3.1 smoke check (not a round)
+
+v3.1 replaces v3's length ceiling with a band per workstream and applies the fixes in `CHANGELOG.md`. It was checked on three shapes v3 was not, with Opus 5.5 generating and the skill delivered by a forced read. One judging session per bundle, with old and new runs judged together, blind and shuffled; one Opus 5.5 judge and one Fable 5.2 judge.
+
+| Shape | Runs | Result |
+|---|---|---|
+| Trivial (V4, typo in a README) | 1 | The change, the searches run, a one-line offer; 79 words, no plan |
+| One workstream (R4, WooCommerce speed), against the 8 round 3 runs | 1 | 8.90 (judges 8.8 and 9.0), against v3 9.15 and 8.80 (two runs), v1 8.35, bare Opus 7.10, bare Fable 6.95. Traps 90%. 1,875 words, above the band's 1,500 |
+| Several workstreams (a plan for the next version of another skill, outside this repository; a **tuned** task, since the v3.1 length rule came from v3's loss on it), against 6 earlier plans | 2 | 8.39 (judges 8.50 and 8.29), against v3 6.91, bare Opus 8.95 and bare Fable 8.93. 5,636 and 4,327 words, against 1,590 and 1,863 for v3 and 6,932 to 8,793 for the bare models |
+
+Reading:
+- **Several workstreams:** the band closed most of v3's gap to bare Opus (from 2.04 points to 0.56). v3.1 is still below both bare models, and weakest on the design of the dynamic-update mechanism, one of the request's workstreams. This is a check on a tuned task, like `v2-recheck-tuned/`, not a held-out result. The raw plans and judgments are outside this repository.
+- **One workstream:** v3.1 matched v3 on quality (8.90 against 8.97 for the two v3 runs). It wrote 1,875 words: 34% more than v3 and 50% more than bare Opus, and above its own band. A likely cause, not yet tested: "each needing its own phase or decision" lets phases count as workstreams.
+- **Wording changed after the check:** the runs used a draft whose workstream example in `task-type-notes.md` echoed this tuned task, and whose definition ("each needing its own phase or decision") let phases count. After the check, the example became a neutral one and SKILL.md step 11 now says "Phases of one outcome are one workstream". That final wording is unmeasured.
+- **Weight of the evidence:** these are 4 runs, one per shape at most two, and directional only. A full round is still owed (see "Known gaps").
 
 ## Verdict on the user's question
 
@@ -133,8 +149,10 @@ A Fable 5.2 agent that had not seen the skill wrote the answer key and a 0–10 
   - **Worse:** they do not catch more planted traps than bare Opus. Grounding drops (4.75 → 4.08 for v2), and so does actionability (4.83 → 4.17).
   - **Mixed:** overall rank. One judge ranks bare Opus above both skill versions.
 - **Caveats:**
-  - **Sample:** 9 held-out tasks, 2 runs each, 2 judges.
-  - **Recognisable format:** judges can recognise the skill's output format.
+  - **Sample:** rounds 1 and 2 had 9 held-out tasks, 2 runs each, 2 judges; round 3 adds 4 tasks.
+  - **Recognisable format:** judges can recognise the skill's output format. In round 3, "Answer first" appears in 8 of 8 v1 and v3 runs and in none of the bare runs; "First steps" in 8 of 8 v3 runs only. `blind.py --normalize` neutralises these phrases for future rounds.
+  - **Same-family rubric:** the round 3 key and scoring guide were written by a Fable 5.2 agent that had not seen the skill, but they reward the same planning traits the skill was built from (a default with each question, a first step that can start today, explicit deferrals). Part of v1's jump in round 3 may come from the change of rubric.
+  - **Untested shapes in round 3:** no trivial task, no bounded change, no project outside software, and no plan with several workstreams.
   - **Unrecorded effort:** subagent reasoning effort was not recorded.
   - **Shared context:** each arm planned 2–4 tasks in one context.
   - **Forced read:** the skill was delivered by a forced read, so triggering from its `description` is untested.
@@ -145,11 +163,13 @@ A Fable 5.2 agent that had not seen the skill wrote the answer key and a 0–10 
 
 1. **Grounding and first steps.** These were the gaps of v1 and v2. v3 addresses them with premise facts, a check of each default against the real workflow, and concrete first steps. On R1, the brownfield task, it improved, but that is a single task.
 2. **Fact checks.** Judges still flag claims stated as fact that the code contradicts, such as the foreign-key behaviour in better-sqlite3. v3's run-before-assert rule only helps when the model actually runs or reads the code.
-3. **Sample size.** Re-measure with more tasks and runs, and use judges blind to output format (for example, normalise headings before judging). Also test triggering from the `description`, without a forced read.
+3. **Sample size.** Re-measure with more tasks and runs, and use judges blind to output format (`blind.py --normalize`). Also test triggering from the `description`, without a forced read.
+4. **A full round for v3.1.** Include a trivial task, a bounded change, a project outside software and a request with several workstreams, and one judge from another model family.
 
 ## Where everything is
 
 - `research/extraction/`: tasks, raw traces (with and without the advisor), Fable's self-report, delta analysis.
 - `research/evaluation/round1/`, `round2/`, `round3/`: tasks, answer keys, all runs, judge JSON, mapping, `scores.txt`, frozen skill snapshots (v1, v2, v3).
-- `research/evaluation/*.py`: blinding and scoring scripts.
+- `research/evaluation/*.py`: blinding and scoring scripts; `research/evaluation/tests/`: their unit tests.
+- `research/evaluation/v31-smoke/`: the v3.1 smoke check runs, the blinded R4 bundle, its judgments and `aggregate.py`.
 - `research/fixtures/shopmini/`: the small repository used by brownfield tasks.

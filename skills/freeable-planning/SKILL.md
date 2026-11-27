@@ -1,17 +1,15 @@
 ---
 name: freeable-planning
-description: Use when about to plan or start a software feature, migration, refactor, incident fix, performance or improvement work, a new system, website or app, a vague request, or any other multi-step task before acting; when deciding how much planning a request deserves, including small changes that may need no plan at all; and when a plan must be produced without being able to ask the user clarifying questions.
+description: Use when about to plan or start a software feature, migration, refactor, incident fix, performance or improvement work, a new system, website or app, a vague request, a project outside software (an event, a move, a launch), or any other task with several steps or that touches production, data or other people; and when a plan must be produced without being able to ask the user clarifying questions.
 ---
 
 # Freeable Planning
 
 ## Overview
 
-You already look before asking, attach defaults, phase the work, verify, and plan rollback. Keep that; the steps below shape the rest.
+Every plan keeps the basics: look before asking, attach a default to each unknown, phase the work, verify each step, plan the rollback. The steps below shape the rest.
 
 **Core principle:** the first lines say where the work is and what you found that changes the request; left unanswered, the plan does the cheapest thing that is safe to undo; every risky step says what would stop it; phase 1 ends in steps someone can start today.
-
-Origin: Fable 5.2's planning, from traces written with and without a review step, corrected by two rounds of blind evaluation. The review step added the most, so one is built in. `CHANGELOG.md` credits each source.
 
 ## Size the response first
 
@@ -54,11 +52,19 @@ Trivial-task recipe: the change, what you checked (variants and other uses), a o
    - **Access and resources.** What you can see, who does the work.
 6. **Smallest change, full failure coverage, inside the steps.** Use the fewest files, limits, dependencies and refactors that satisfy the request; adjacent findings go in the closing list. Run the standard failures of this kind of change: many callers at the same moment, expiry and retry, partial failure, stale or lost data, overload, a dependency down, an unknown caller. Each one that applies becomes one line in the step it protects, naming the protection. "Smallest" limits features; failure coverage, staged rollout and verification stay whole. Each step names the exact command, query or observation that verifies it.
 7. **Write the gates.** When a step touches production, data or other people, write the observable condition that halts or reverses it, with a number where one exists: a go/no-go list before an irreversible step, an abort rule inside it, a revert rule after it. A diagnosis is proven when the fault reproduces with the suspected cause present and not without it. Destructive steps wait for sign-off.
-8. **Flag once, at the point of use.** A specific recalled from memory (option name, version, config key) gets one sentence beside it naming the check that settles it. Unrun code is declared in the opener, with the assertion most likely to be wrong. Relative dates become dates, with your reading stated.
+8. **Flag once, at the point of use.** A specific recalled from memory (option name, version, config key, a library's default behaviour) gets one sentence beside it naming the check that settles it. A command or query you did not run names the version it assumes. Unrun code is declared in the opener, with the assertion most likely to be wrong. Relative dates become dates, with your reading stated.
 9. **Write the first steps.** Phase 1 closes with three to six actions that need no answer, each naming a real file and function, a command, a query or an edit. For a bounded change to code you have read, this is the diff. For a system you have not seen, it is the exact command or query that produces the first artefact; invent no file names.
 10. **One line each, when the condition holds.** The reason for an order a reader would want to change. A standard step you left out, and why. For a change of architecture or process: what the current arrangement gives for free and what replaces it.
 11. **Apply the length rule.**
-    - The length you would write without this skill, plus 10% at most: about 1,000 words for a multi-phase plan, 500 for a bounded change, code and diffs excluded. Premise facts and first steps are paid for by cutting restatement.
+    - Count the workstreams: the separate outcomes the request asks for. Phases of one outcome are one workstream. Prose, with code and diffs outside the count:
+
+      | Response | Prose |
+      |---|---|
+      | Bounded change | about 500 words |
+      | Plan, one workstream | 800 to 1,500 words |
+      | Plan, several workstreams | 800 to 1,500 words per workstream, plus the opener, the questions and one first-steps block |
+
+    - Words go to decisions, checks and gates. Premise facts and first steps are paid for by cutting restatement.
     - Say each thing once, where it is used. A step is a verb, the real thing it changes, and its check.
     - A heading has at least three lines under it, or folds into its neighbour. The opener is prose, with no "Summary" heading above it.
     - Each risk appears once, in its gate or its step.
@@ -73,8 +79,8 @@ Trivial-task recipe: the change, what you checked (variants and other uses), a o
     | Failures | Each standard failure that applies is one line inside its step; no separate failure list exists |
     | Questions | Five or fewer; driver, then tolerance, first; each has a default; the plan is complete without answers |
     | First steps | Phase 1 ends in files, commands, queries or edits; none says only "audit" or "investigate" |
-    | Invention | Every number, version, option name and file name was read, was run, or carries a flag |
-    | Size | Within the length rule; no heading under three lines; no risk stated twice |
+    | Invention | Every number, version, option name, file name and library default was read, was run, or carries a flag; every unrun command or query names the version it assumes |
+    | Size | Inside the band for its workstream count; no heading under three lines; no risk stated twice |
 
     For a trivial change, one pass over three checks: the edit is complete (variants and other uses searched), nothing was invented, nothing was added.
 
@@ -103,7 +109,10 @@ Trivial-task recipe: the change, what you checked (variants and other uses), a o
    *if parameters are guessed*: observe-only stage before enforcement.
    *if an irreversible step*: go/no-go list; abort rule inside the step.
    *if step 3 chose the cheaper path*: the request as a branch.
+   *if step 3 kept the request and a cheaper path exists*: the cheaper
+   path, one paragraph: what it is, what it costs, when it is right.
 5. *if findings*: FOUND, NOT TOUCHED, one line each.
+   Fewer than three: one closing sentence, no heading.
 ```
 
 ## Two examples
@@ -114,7 +123,7 @@ Trivial-task recipe: the change, what you checked (variants and other uses), a o
 
 ## References
 
-- `references/question-bank.md`: the filter, the cap, questions by task type.
-- `references/gates-and-defaults.md`: a quick-reference table, then patterns for premise facts, default path, use walk, failure lines, gates, flags, first steps.
-- `references/task-type-notes.md`: what to add and keep per task type.
-- `references/worked-examples.md`: the eight source tasks, before and after.
+- `references/question-bank.md`: the filter, the cap, example questions by task type. Read when drafting part 3.
+- `references/gates-and-defaults.md`: a quick-reference table, then patterns for premise facts, default path, use walk, failure lines, gates, flags, first steps. Read when a step touches production, data or people, or an unknown blocks the work.
+- `references/task-type-notes.md`: what to add and keep per task type. Read once the task type is known, before drafting.
+- `references/worked-examples.md`: the eight source tasks, before and after. Read when unsure what a slot looks like in a finished plan.

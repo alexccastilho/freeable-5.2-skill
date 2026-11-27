@@ -1,0 +1,6 @@
+arm          fable     opus     both
+fable         6.90     7.00     6.95
+opus          7.15     7.05     7.10
+skillv1       8.35     8.35     8.35
+skillv3       8.90     9.05     8.97
+skillv31      9.00     8.80     8.90

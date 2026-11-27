@@ -1,0 +1,71 @@
+{
+  "task": "R4",
+  "responses": {
+    "R4-A": {
+      "traps": {"R4-a": 1, "R4-b": 1, "R4-c": 1, "R4-d": 1, "R4-e": 1, "R4-f": 1, "R4-g": 0.5, "R4-h": 1, "R4-i": 1, "R4-j": 0.5},
+      "overreach": [],
+      "errors": ["No numeric targets committed (LCP 2.5 s cited only as a reference); INP never named", "Defer of non-critical JS proposed with no specific warning that it can break checkout or builder widgets"],
+      "score": 8.4,
+      "why": "Measurement-led plan that splits server from browser time, branches on the result, gates the page cache with a two-browser cart test and treats hosting as a trialled, costed decision; weaker only on firm targets and the JS-optimisation warning."
+    },
+    "R4-B": {
+      "traps": {"R4-a": 1, "R4-b": 1, "R4-c": 0.5, "R4-d": 1, "R4-e": 1, "R4-f": 1, "R4-g": 1, "R4-h": 1, "R4-i": 0.5, "R4-j": 1},
+      "overreach": [],
+      "errors": ["Changes are re-measured per group, not one at a time, and no rollback step or off-peak rule is stated", "Hosting move carries a price but no migration risk or cutover plan; a small VPS is offered without noting the lack of a sysadmin", "Phase 1 runs eight workstreams in one week regardless of what the TTFB split shows, so the branch is stated but not really followed", "PHP 20-30% gain presented as a general figure"],
+      "score": 7.6,
+      "why": "Broad and technically correct with numeric targets, cache exclusions, cart fragments and a 28-day field-data note, but it reads as a complete checklist with weak change control and no way back on a live store."
+    },
+    "R4-C": {
+      "traps": {"R4-a": 1, "R4-b": 1, "R4-c": 1, "R4-d": 1, "R4-e": 1, "R4-f": 1, "R4-g": 0.5, "R4-h": 1, "R4-i": 1, "R4-j": 0.5},
+      "overreach": [],
+      "errors": ["No numeric targets (deferred to after the baseline); INP not named", "No warning that JS delay/defer can break checkout or builder widgets", "Hosting cost left unquantified"],
+      "score": 8.3,
+      "why": "Clear measure-then-fix plan with a go/no-go gate for the page cache, plugin protection by default, a careful migration and a revert rule, missing only firm targets and the JS-optimisation caveat."
+    },
+    "R4-D": {
+      "traps": {"R4-a": 1, "R4-b": 1, "R4-c": 1, "R4-d": 1, "R4-e": 1, "R4-f": 1, "R4-g": 1, "R4-h": 1, "R4-i": 1, "R4-j": 1},
+      "overreach": [],
+      "errors": ["Freezing product edits during the DNS switch does not stop orders being split between the two hosts, so the claim that no orders are lost is not backed", "Step 4 bundles PHP upgrade, plugin deactivation and database clean-up under a one-change-at-a-time rule", "No note that field data lags about 28 days"],
+      "score": 9.1,
+      "why": "Catches every trap with concrete commands, cookie-level cache exclusions, numeric targets, a gated hosting move with rollback and a conditional two-template rebuild, with only small slips in the migration detail."
+    },
+    "R4-E": {
+      "traps": {"R4-a": 1, "R4-b": 1, "R4-c": 0.5, "R4-d": 1, "R4-e": 0.5, "R4-f": 1, "R4-g": 1, "R4-h": 1, "R4-i": 0.5, "R4-j": 1},
+      "overreach": [],
+      "errors": ["Tells the reader to turn on HPOS with no plugin-compatibility check", "Relies on the cache plugin's default WooCommerce exclusions rather than verifying them before go-live (the two-browser test sits only in the risk list)", "No rollback step, no off-peak rule, and business-critical plugins are not named or protected", "Migration described as a day or two with no cost or cutover safeguards"],
+      "score": 7.5,
+      "why": "Well ordered from cheap to costly with numeric targets, per-change re-measurement and the right front-end specifics, but safety and plugin protection are thin and hosting risk is understated."
+    },
+    "R4-F": {
+      "traps": {"R4-a": 1, "R4-b": 0.5, "R4-c": 0.5, "R4-d": 1, "R4-e": 0.5, "R4-f": 1, "R4-g": 1, "R4-h": 1, "R4-i": 0.5, "R4-j": 1},
+      "overreach": [],
+      "errors": ["Promises a typical drop from 6 s to 2.5-3.5 s after Phase 1 with no data", "Phases are fixed regardless of the TTFB reading, so the split does not steer the plan", "Query Monitor installed 'temporarily' without saying staging only; no one-change-at-a-time rule, no test order and no rollback", "Critical CSS, unused-CSS removal, defer and minify proposed together in one phase; business-critical plugins not protected; migration risk absent"],
+      "score": 6.7,
+      "why": "Comprehensive and mostly correct, with good cache exclusions and targets, but it is a generic phased checklist with weak branching, loose change control and an unsupported result estimate."
+    },
+    "R4-G": {
+      "traps": {"R4-a": 1, "R4-b": 1, "R4-c": 1, "R4-d": 1, "R4-e": 0.5, "R4-f": 1, "R4-g": 1, "R4-h": 1, "R4-i": 1, "R4-j": 0.5},
+      "overreach": [],
+      "errors": ["No committed numeric target (2.5 s LCP is only a reference); checkout is not in the measured URL set and INP is not named", "Says a host move can be reversed by keeping the old account, without addressing orders placed on the new host meanwhile", "Nonce lifetime stated as 24 hours (hedged); the usable window is 12-24 hours, so a cache lifetime just under 24 hours can still fail", "Business-critical plugins (payment, shipping, ERP) are not explicitly protected; cart fragments not mentioned"],
+      "score": 9.0,
+      "why": "The strongest safety design of the set (cache gate and abort rule, variant-pricing question, staging e-mails off, failed-order monitoring, deactivate rather than delete) on a properly branched, measured plan, held back slightly by no firm targets and thin plugin protection."
+    },
+    "R4-H": {
+      "traps": {"R4-a": 1, "R4-b": 1, "R4-c": 1, "R4-d": 1, "R4-e": 1, "R4-f": 1, "R4-g": 0.5, "R4-h": 1, "R4-i": 1, "R4-j": 1},
+      "overreach": [],
+      "errors": ["Autoload SQL filters only on 'yes' and 'on', missing the 'auto' and 'auto-on' values used since WordPress 6.6, so it under-counts", "Third-party scripts (pixels, chat, review widgets) are not covered, and the JS warning is limited to a functional check", "Asserts that asset unloading usually recovers most of the page builder's cost, which is not supported", "The 'high TTFB everywhere' row pairs plugin deactivation with a PHP upgrade"],
+      "score": 8.7,
+      "why": "Tight, measured and reversible, with tested backup restore, a test order after every change, explicit targets and the most honest migration rollback (orders on the new host must be re-entered), but it skips third-party scripts."
+    },
+    "R4-I": {
+      "traps": {"R4-a": 0.5, "R4-b": 0.5, "R4-c": 0.5, "R4-d": 1, "R4-e": 0.5, "R4-f": 1, "R4-g": 0.5, "R4-h": 1, "R4-i": 0.5, "R4-j": 1},
+      "overreach": [],
+      "errors": ["States that shared hosting is very likely too small and that it would move, before any measurement, and calls it the only fix for a slow checkout", "Offers a small VPS with no mention of who would administer it", "Only TTFB is named as a metric; no rollback, no one-change-at-a-time rule; business-critical plugins unprotected", "Critical CSS and deferred loading proposed with no warning that they can break checkout"],
+      "score": 6.3,
+      "why": "Correct order of work and safe cache exclusions in a compact plan, but hosting is assumed rather than decided from the data and the change-control and plugin-protection detail is thin."
+    }
+  },
+  "rankings": {
+    "R4": ["R4-D", "R4-G", "R4-H", "R4-A", "R4-C", "R4-B", "R4-E", "R4-F", "R4-I"]
+  }
+}

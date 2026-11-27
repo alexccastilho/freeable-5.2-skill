@@ -1,5 +1,30 @@
 # Changelog
 
+## v3.1
+
+Not measured in a full round. The scores in the v3 section are for v3, frozen in `research/evaluation/round3/skill-v3/`. The smoke check below is the only evidence for v3.1.
+
+Sources: an external review of the repository, checked against the data in this repository, and one blind comparison outside it in which Opus + v3 scored last on a plan with several workstreams (6.69 against 8.52 bare Opus and 8.74 bare Fable; three judges). Its plans had 1,590 and 1,863 words against 6,932 to 8,793 for the bare models, and they lost on coverage of whole workstreams.
+
+| # | Problem in v3 | v3.1 |
+|---|---|---|
+| 1 | Length rule could not be observed ("the length you would write without this skill") and its ceiling (about 1,000 words) sat below the bare model's own length on the round 3 tasks (1,344 on average). On a request with several workstreams it cut the plan to a fifth | Step 11: a band set by the number of workstreams in the request, 800 to 1,500 words of prose each; about 500 for a bounded change. Size check updated |
+| 2 | The `description` invited loading the skill to decide that a small change needs no plan, and had dropped projects outside software, which the body and references still cover | Triggers on multi-step work, work touching production, data or people, and projects outside software. The trivial-change recipe stays in the body |
+| 3 | When step 3 kept the request, the output contract had no slot for the cheaper path that step 3 requires | Part 4 has that slot |
+| 4 | "Found, not touched" with one or two items conflicted with the three-line heading minimum | Fewer than three: one closing sentence, no heading |
+| 5 | References had lost the "read when" triggers v1 had | Each reference has one |
+| 6 | Judges flagged claims about library defaults and version-bound queries (foreign keys in better-sqlite3, WordPress autoload values) | Step 8, the Invention check and pattern F5: a library default is read, run or flagged; an unrun command names the version it assumes |
+| 7 | The question bank put the driver third for brownfield work and kept six or seven "Ask" rows for three task types | Driver or tolerance first, at most five "Ask" rows per table, and a note that rows are examples from one source task each |
+| 8 | The overview assumed the reader already plans well ("You already...") | States the basics as part of every plan |
+| 9 | The origin paragraph and this changelog lived inside the installable folder, with a link that broke after installation | Origin paragraph removed; changelog moved to the repository root |
+
+**Smoke check** (4 runs, blind, one Opus and one Fable judge; details in `research/RESULTS.md`):
+- **Plan with several workstreams (the tuned task the rule came from):** 8.39 against 6.91 for v3, and 8.95 and 8.93 for bare Opus and bare Fable.
+- **WooCommerce task from round 3:** 8.90 against 8.97 for v3 in the same judging session, but at 1,875 words: above the one-workstream band, and 50% more than bare Opus.
+- **Trivial typo:** the change itself, in 79 words.
+
+Evaluation scripts: `score3.py` now uses the true median, an exact sign-flip test and English labels; `blind.py` no longer redacts the plain word "skill" and has an optional `--normalize` flag that neutralises the skill's signature headings before judging. The published round 3 numbers do not change; `round3/scores.txt` was regenerated.
+
 ## v3
 
 v3 merges four sources: v1, v2, Fable 5.2 working without a reviewer, and Fable 5.2 working with one. It was written from the evaluation summaries below.
@@ -10,8 +35,8 @@ v3 merges four sources: v1, v2, Fable 5.2 working without a reviewer, and Fable 
 
 Blind evaluation, two judges, quality as the mean of five dimensions scored 1 to 5.
 
-- Seven software planning tasks: a baseline model with v1 averaged 4.44 against 4.12 bare, and was ahead on all seven.
-- Three fresh tasks: v1 4.50, v2 4.38, bare 4.22. v1 ranked above v2.
+- Seven software planning tasks (V1, V2, V3, V5 from round 1 and H1 to H3 from round 2): a baseline model with v1 averaged 4.44 against 4.12 bare, and was ahead on all seven (by 0.05 on V3).
+- The three fresh tasks of round 2 (H1 to H3, already among the seven): v1 4.50, v2 4.38, bare 4.22. v1 ranked above v2.
 
 | Dimension, fresh round | Bare | v1 | v2 |
 |---|---|---|---|
