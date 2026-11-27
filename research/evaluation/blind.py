@@ -15,7 +15,7 @@ out.mkdir(parents=True, exist_ok=True)
 rng = random.Random(seed)
 # Model and skill names, plus references to a skill version or file; the plain word "skill" stays.
 TELLS = re.compile(r"\b(fable|opus|claude|sonnet|haiku|freeable|freeable-planning)\b"
-                   r"|\bskill[\s._-]*(?:v(?:ersion)?)?[\s._-]*\d+(?:\.\d+)*\b|\bSKILL\.md\b", re.I)
+                   r"|\bskill(?:s|'s)?[\s._-]*(?:v(?:ersion)?|rev)?[\s._-]*\d+(?:\.\d+)*\b|\bSKILL\.md\b", re.I)
 SIGNATURES = [
     (re.compile(r"answer first\s*:", re.I), "Priority:"),
     (re.compile(r"first steps", re.I), "Start with"),
@@ -38,7 +38,17 @@ def clean(text):
     return text
 
 
+def leak(text):
+    """Return the first identity tell left in text, or None."""
+    for pattern in (TELLS, ARMS):
+        hit = pattern.search(text) if pattern else None
+        if hit:
+            return hit.group(0)
+    return None
+
+
 mapping = {}
+pending = {}
 files = sorted(runs.glob("*-r*-*.md"))
 tasks = sorted({f.stem.split("-")[-1] for f in files})
 for task in tasks:
@@ -50,9 +60,13 @@ for task in tasks:
         text = clean(f.read_text(encoding="utf-8"))
         parts.append(f"\n\n=============== RESPONSE {task}-{label} ===============\n\n{text}")
         mapping[f"{task}-{label}"] = f.stem
-    (out / f"bundle-{task}.md").write_text("".join(parts), encoding="utf-8")
-for bundle in out.glob("bundle-*.md"):
-    body = bundle.read_text(encoding="utf-8")
-    assert not (ARMS and ARMS.search(body)), f"arm name left in {bundle.name}"
+    pending[f"bundle-{task}.md"] = "".join(parts)
+# Fail closed: check every bundle in memory before anything is written.
+for name, body in pending.items():
+    hit = leak(body)
+    if hit:
+        raise SystemExit(f"identity tell left in {name}: {hit!r}; nothing was written")
+for name, body in pending.items():
+    (out / name).write_text(body, encoding="utf-8")
 (out / "mapping.json").write_text(json.dumps(mapping, indent=2), encoding="utf-8")
 print(f"{len(files)} responses, {len(tasks)} tasks")

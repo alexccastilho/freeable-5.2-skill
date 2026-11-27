@@ -71,6 +71,17 @@ class Blind(unittest.TestCase):
             for leak in ("version 3", "skill_v3", "skill-v2", "skillv31"):
                 self.assertNotIn(leak, text)
 
+    def test_plural_and_possessive_versions_redacted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            runs = Path(tmp) / "runs"
+            runs.mkdir()
+            (runs / "opus-r1-T1.md").write_text("The skill's v3 rule and skills v2 notes.\n", encoding="utf-8")
+            out = Path(tmp) / "out"
+            run("blind.py", runs, out, 1)
+            text = (out / "bundle-T1.md").read_text(encoding="utf-8").lower()
+            self.assertNotIn("v3", text)
+            self.assertNotIn("v2", text)
+
     def test_normalize_flag_neutralises_signatures(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "out"
