@@ -134,11 +134,11 @@ The rows come from one source task per type (a rate limit, a nightly load, a tab
 |---|---|---|
 | Is this piece moving alone, or first of many? | First of many, so tooling is reusable | Ask, first |
 | What does "zero downtime" allow (a few seconds of held writes, none failing)? | Yes, once, about 10 seconds; if no, the cutover design changes | Ask: tolerance, it changes the cutover |
+| Must a read after a write see it? | Yes; reads stay on the old store until writes move | Ask: tolerance, it sets the read order |
 | What references, joins or shares a transaction with the thing being moved? | Several; they are decoupled first | Ask |
 | Managed or self-hosted; is the change stream available? | Available; a preliminary phase checks it | Ask |
 | What else writes to it? | A few jobs, all changeable; privileges revoked at cutover so a missed writer fails loudly | Assume, then check |
 | Is there one data-access layer? | No; it is consolidated first | Assume |
-| Must a read after a write see it? | Yes; reads stay on the old store until writes move | Ask: tolerance, it sets the read order |
 | Write rate? | Measured in the preliminary phase | Assume |
 
 ### Large cross-cutting change

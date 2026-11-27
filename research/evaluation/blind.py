@@ -14,7 +14,8 @@ runs, out, seed = Path(args[0]), Path(args[1]), int(args[2])
 out.mkdir(parents=True, exist_ok=True)
 rng = random.Random(seed)
 # Model and skill names, plus references to a skill version or file; the plain word "skill" stays.
-TELLS = re.compile(r"\b(fable|opus|claude|sonnet|haiku|freeable|freeable-planning)\b|\bskill[- ]?v\d+\b|\bSKILL\.md\b", re.I)
+TELLS = re.compile(r"\b(fable|opus|claude|sonnet|haiku|freeable|freeable-planning)\b"
+                   r"|\bskill[\s._-]*(?:v(?:ersion)?)?[\s._-]*\d+(?:\.\d+)*\b|\bSKILL\.md\b", re.I)
 SIGNATURES = [
     (re.compile(r"answer first\s*:", re.I), "Priority:"),
     (re.compile(r"first steps", re.I), "Start with"),
@@ -23,8 +24,14 @@ SIGNATURES = [
 ]
 
 
+ARM_NAMES = sorted({f.stem.split("-")[0] for f in runs.glob("*-r*-*.md")}, key=len, reverse=True)
+ARMS = re.compile(r"\b(" + "|".join(map(re.escape, ARM_NAMES)) + r")\b", re.I) if ARM_NAMES else None
+
+
 def clean(text):
     text = TELLS.sub("[redacted]", text)
+    if ARMS:
+        text = ARMS.sub("[redacted]", text)
     if normalize:
         for pattern, neutral in SIGNATURES:
             text = pattern.sub(neutral, text)
@@ -44,5 +51,8 @@ for task in tasks:
         parts.append(f"\n\n=============== RESPONSE {task}-{label} ===============\n\n{text}")
         mapping[f"{task}-{label}"] = f.stem
     (out / f"bundle-{task}.md").write_text("".join(parts), encoding="utf-8")
+for bundle in out.glob("bundle-*.md"):
+    body = bundle.read_text(encoding="utf-8")
+    assert not (ARMS and ARMS.search(body)), f"arm name left in {bundle.name}"
 (out / "mapping.json").write_text(json.dumps(mapping, indent=2), encoding="utf-8")
 print(f"{len(files)} responses, {len(tasks)} tasks")

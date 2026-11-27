@@ -58,6 +58,19 @@ class Blind(unittest.TestCase):
             self.assertNotIn("skill v3", text)
             self.assertIn("Answer first:", text)
 
+    def test_redacts_skill_version_variants_and_arm_names(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            runs = Path(tmp) / "runs"
+            runs.mkdir()
+            (runs / "skillv31-r1-T1.md").write_text(
+                "Per skill version 3.1, skill_v3 and Skill-V2 rules; see skillv31 notes.\n", encoding="utf-8")
+            (runs / "opus-r1-T1.md").write_text("plain text\n", encoding="utf-8")
+            out = Path(tmp) / "out"
+            run("blind.py", runs, out, 1)
+            text = (out / "bundle-T1.md").read_text(encoding="utf-8").lower()
+            for leak in ("version 3", "skill_v3", "skill-v2", "skillv31"):
+                self.assertNotIn(leak, text)
+
     def test_normalize_flag_neutralises_signatures(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "out"

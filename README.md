@@ -44,7 +44,7 @@ Copy-Item -Recurse -Force freeable-5.2-skill\skills\freeable-planning "$HOME\.cl
 
 Full write-up: [`research/RESULTS.md`](research/RESULTS.md). All raw traces, answer keys, judge outputs and scripts are in `research/`.
 
-**Version note.** The shipped skill is **v3.1**: v3 with a length rule that scales with the number of workstreams and the fixes listed in [`CHANGELOG.md`](CHANGELOG.md). The table below measures **v3**, frozen in `research/evaluation/round3/skill-v3/`. v3.1 has only a smoke check so far (see `research/RESULTS.md`).
+**Version note.** The shipped skill is **v3.1**: v3 with a length rule that scales with the number of workstreams and the fixes listed in [`CHANGELOG.md`](CHANGELOG.md). The table below measures **v3**, frozen in `research/evaluation/round3/skill-v3/`. v3.1 has only a smoke check so far (see `research/RESULTS.md`): on a plan with several workstreams it scored 8.4 against 6.9 for v3 (bare models about 8.9), and on a one-workstream task it matched v3 but wrote about 50% more than bare Opus.
 
 The latest round (round 3, skill v3) covered 4 new software-planning tasks: a production-readiness review of a real repository, a mobile crash regression, internationalising a Next.js shop, and speeding up a WooCommerce store. Each arm ran twice per task. Two blind judges scored every plan from 0 to 10, one Fable 5.2 and one Opus 5.5, against an answer key written before any response existed.
 
@@ -111,7 +111,7 @@ Copie `skills/freeable-planning/` para `~/.claude/skills/`, para uso pessoal, ou
 
 ### Funciona?
 
-**Sobre a versão.** A skill publicada é a **v3.1**: a v3 com uma regra de tamanho que acompanha o número de frentes de trabalho e as correções listadas no [`CHANGELOG.md`](CHANGELOG.md). A tabela abaixo mede a **v3**, congelada em `research/evaluation/round3/skill-v3/`. Por enquanto, a v3.1 só passou por uma checagem rápida (ver `research/RESULTS.md`).
+**Sobre a versão.** A skill publicada é a **v3.1**: a v3 com uma regra de tamanho que acompanha o número de frentes de trabalho e as correções listadas no [`CHANGELOG.md`](CHANGELOG.md). A tabela abaixo mede a **v3**, congelada em `research/evaluation/round3/skill-v3/`. Por enquanto, a v3.1 só passou por uma checagem rápida (ver `research/RESULTS.md`). Num plano com várias frentes, tirou 8,4 contra 6,9 da v3 (os modelos puros ficaram perto de 8,9). Numa tarefa de uma frente só, empatou com a v3, mas escreveu cerca de 50% a mais que o Opus puro.
 
 Na rodada mais recente (rodada 3, skill v3), 4 tarefas novas de planejamento de software foram avaliadas às cegas por dois juízes, um Fable 5.2 e um Opus 5.5, com notas de 0 a 10:
 

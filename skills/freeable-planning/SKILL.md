@@ -56,7 +56,7 @@ Trivial-task recipe: the change, what you checked (variants and other uses), a o
 9. **Write the first steps.** Phase 1 closes with three to six actions that need no answer, each naming a real file and function, a command, a query or an edit. For a bounded change to code you have read, this is the diff. For a system you have not seen, it is the exact command or query that produces the first artefact; invent no file names.
 10. **One line each, when the condition holds.** The reason for an order a reader would want to change. A standard step you left out, and why. For a change of architecture or process: what the current arrangement gives for free and what replaces it.
 11. **Apply the length rule.**
-    - Count the workstreams: the separate outcomes the request asks for, each needing its own phase or decision. Prose, with code and diffs outside the count:
+    - Count the workstreams: the separate outcomes the request asks for. Phases of one outcome are one workstream. Prose, with code and diffs outside the count:
 
       | Response | Prose |
       |---|---|

@@ -19,8 +19,8 @@ Sources: an external review of the repository, checked against the data in this 
 | 9 | The origin paragraph and this changelog lived inside the installable folder, with a link that broke after installation | Origin paragraph removed; changelog moved to the repository root |
 
 **Smoke check** (4 runs, blind, one Opus and one Fable judge; details in `research/RESULTS.md`):
-- **Plan with several workstreams:** 8.45 against 6.94 for v3, and 8.98 and 8.93 for bare Opus and bare Fable.
-- **WooCommerce task from round 3:** 8.90 against v3 at 9.15 and 8.80 in the same judging session, at 1,875 words, above the one-workstream band.
+- **Plan with several workstreams (the tuned task the rule came from):** 8.39 against 6.91 for v3, and 8.95 and 8.93 for bare Opus and bare Fable.
+- **WooCommerce task from round 3:** 8.90 against 8.97 for v3 in the same judging session, but at 1,875 words: above the one-workstream band, and 50% more than bare Opus.
 - **Trivial typo:** the change itself, in 79 words.
 
 Evaluation scripts: `score3.py` now uses the true median, an exact sign-flip test and English labels; `blind.py` no longer redacts the plain word "skill" and has an optional `--normalize` flag that neutralises the skill's signature headings before judging. The published round 3 numbers do not change; `round3/scores.txt` was regenerated.

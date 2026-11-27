@@ -130,11 +130,12 @@ v3.1 replaces v3's length ceiling with a band per workstream and applies the fix
 |---|---|---|
 | Trivial (V4, typo in a README) | 1 | The change, the searches run, a one-line offer; 79 words, no plan |
 | One workstream (R4, WooCommerce speed), against the 8 round 3 runs | 1 | 8.90 (judges 8.8 and 9.0), against v3 9.15 and 8.80 (two runs), v1 8.35, bare Opus 7.10, bare Fable 6.95. Traps 90%. 1,875 words, above the band's 1,500 |
-| Several workstreams (a plan for the next version of another skill, outside this repository), against 6 earlier plans | 2 | 8.45 (judges 8.50 and 8.39), against v3 6.94, bare Opus 8.98 and bare Fable 8.93. 5,636 and 4,327 words, against 1,590 and 1,863 for v3 and 6,932 to 8,793 for the bare models |
+| Several workstreams (a plan for the next version of another skill, outside this repository; a **tuned** task, since the v3.1 length rule came from v3's loss on it), against 6 earlier plans | 2 | 8.39 (judges 8.50 and 8.29), against v3 6.91, bare Opus 8.95 and bare Fable 8.93. 5,636 and 4,327 words, against 1,590 and 1,863 for v3 and 6,932 to 8,793 for the bare models |
 
 Reading:
-- **Several workstreams:** the band closed most of v3's gap (from about 2.0 points to about 0.5). v3.1 is still below both bare models, and weakest on the design of the dynamic-update mechanism, one of the request's workstreams.
-- **One workstream:** v3.1 matched v3 on quality. It wrote about a third more, and above its own band.
+- **Several workstreams:** the band closed most of v3's gap to bare Opus (from 2.04 points to 0.56). v3.1 is still below both bare models, and weakest on the design of the dynamic-update mechanism, one of the request's workstreams. This is a check on a tuned task, like `v2-recheck-tuned/`, not a held-out result. The raw plans and judgments are outside this repository.
+- **One workstream:** v3.1 matched v3 on quality (8.90 against 8.97 for the two v3 runs). It wrote 1,875 words: 34% more than v3 and 50% more than bare Opus, and above its own band. A likely cause, not yet tested: "each needing its own phase or decision" lets phases count as workstreams.
+- **Wording changed after the check:** the runs used a draft whose workstream example in `task-type-notes.md` echoed this tuned task, and whose definition ("each needing its own phase or decision") let phases count. After the check, the example became a neutral one and SKILL.md step 11 now says "Phases of one outcome are one workstream". That final wording is unmeasured.
 - **Weight of the evidence:** these are 4 runs, one per shape at most two, and directional only. A full round is still owed (see "Known gaps").
 
 ## Verdict on the user's question
@@ -169,5 +170,6 @@ Reading:
 
 - `research/extraction/`: tasks, raw traces (with and without the advisor), Fable's self-report, delta analysis.
 - `research/evaluation/round1/`, `round2/`, `round3/`: tasks, answer keys, all runs, judge JSON, mapping, `scores.txt`, frozen skill snapshots (v1, v2, v3).
-- `research/evaluation/*.py`: blinding and scoring scripts.
+- `research/evaluation/*.py`: blinding and scoring scripts; `research/evaluation/tests/`: their unit tests.
+- `research/evaluation/v31-smoke/`: the v3.1 smoke check runs, the blinded R4 bundle, its judgments and `aggregate.py`.
 - `research/fixtures/shopmini/`: the small repository used by brownfield tasks.
